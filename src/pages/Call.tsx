@@ -14,6 +14,7 @@ export default function Call() {
   const [counter, setCounter] = useState(1);
   const callTicket = useQueueStore((s) => s.callTicket);
   const completeTicket = useQueueStore((s) => s.completeTicket);
+  const passTicket = useQueueStore((s) => s.passTicket);
 
   return (
     <div className="min-h-screen bg-[#e6e6e6] text-[#222]">
@@ -88,8 +89,8 @@ export default function Call() {
                 </button>
                 <button
                   type="button"
-                  disabled
-                  className="inline-flex h-11 items-center justify-center rounded-lg border border-black/10 bg-black/[0.04] px-4 text-sm font-semibold text-black/35"
+                  onClick={() => passTicket(station, ticketInput, counter)}
+                  className="inline-flex h-11 items-center justify-center rounded-lg border border-black/15 bg-white px-4 text-sm font-semibold text-black/80 shadow-sm transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
                 >
                   已過號
                 </button>
