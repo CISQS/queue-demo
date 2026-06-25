@@ -4,6 +4,8 @@ import { getStationOption, isStationKey, type StationKey } from "@/queue/station
 import { useQueueSnapshot } from "@/hooks/useQueueSnapshot";
 import { useQueueStore } from "@/queue/store";
 
+const FIXED_MISSED_TICKETS = Array.from({ length: 11 }, (_, idx) => `OPD${String(200 + idx).padStart(3, "0")}`);
+
 function formatDateTimeDDMMYYYYHHmmss(date: Date) {
   const dd = String(date.getDate()).padStart(2, "0");
   const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -25,7 +27,7 @@ export default function QueueDisplay() {
   const { snapshot, passedTickets } = useQueueSnapshot(station);
   const cycleCounterTicket = useQueueStore((s) => s.cycleCounterTicket);
   const [now, setNow] = useState(() => new Date());
-  const [showNoticeTickets, setShowNoticeTickets] = useState(true);
+  const [showFixedNoticeTickets, setShowFixedNoticeTickets] = useState(true);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
@@ -188,7 +190,7 @@ export default function QueueDisplay() {
 
         <button
           type="button"
-          onClick={() => setShowNoticeTickets((prev) => !prev)}
+          onClick={() => setShowFixedNoticeTickets((prev) => !prev)}
           className="mb-5 mt-1 flex h-[100px] w-full items-center bg-white box-border text-left text-2xl font-semibold font-sans"
         >
           <svg
@@ -223,18 +225,26 @@ export default function QueueDisplay() {
           </div>
         </button>
 
-        {showNoticeTickets ? (
-          <div className="flex w-full flex-1 flex-wrap content-start overflow-auto bg-[#f6f9f1] p-4 box-border font-sans text-[#53524d]">
-            {noticeTickets.map((t) => (
+        <div className="flex w-full flex-1 flex-wrap content-start overflow-auto bg-[#f6f9f1] p-4 box-border font-sans text-[#53524d]">
+          {noticeTickets.map((t) => (
+            <div
+              key={`passed-${t}`}
+              className="mr-3 mb-3 rounded bg-white px-4 py-2 text-3xl font-semibold tabular-nums shadow-sm md:text-4xl"
+            >
+              {t}
+            </div>
+          ))}
+          {showFixedNoticeTickets
+            ? FIXED_MISSED_TICKETS.map((t) => (
               <div
-                key={t}
+                key={`mock-${t}`}
                 className="mr-3 mb-3 rounded bg-white px-4 py-2 text-3xl font-semibold tabular-nums shadow-sm md:text-4xl"
               >
                 {t}
               </div>
-            ))}
-          </div>
-        ) : null}
+            ))
+            : null}
+        </div>
 
         <div style={{ background: "rgb(246, 249, 241)", display: "none" }}>
           <img src={asset("qdisplay/assets/Notice_V2-dwi0n6kw.png")} className="m-auto w-[800px]" />
