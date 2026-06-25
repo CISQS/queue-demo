@@ -48,6 +48,7 @@ export default function QueueDisplay() {
 
   const columnLabelZh = station === "dr" ? "診室" : "櫃位";
   const columnLabelEn = station === "dr" ? "Room" : "Counter";
+  const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`;
 
   return (
     <div className="min-h-screen w-full font-mono">
@@ -56,7 +57,7 @@ export default function QueueDisplay() {
           <div className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white">
             <button type="button" onClick={() => navigate("/")} className="m-2 flex items-center pl-5 text-left">
               <img
-                src="/qdisplay/assets/hksh_logo-CIMGYLsQ.png"
+                src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
                 className="h-16 cursor-pointer"
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
@@ -83,7 +84,7 @@ export default function QueueDisplay() {
               </div>
               <div className="opacity-40">
                 <img
-                  src="/qdisplay/assets/logo-hksh-emc-sh-B1ezILO2.png"
+                  src={asset("qdisplay/assets/logo-hksh-emc-sh-B1ezILO2.png")}
                   className="min-h-20"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
@@ -229,7 +230,7 @@ export default function QueueDisplay() {
         </div>
 
         <div style={{ background: "rgb(246, 249, 241)", display: "none" }}>
-          <img src="/qdisplay/assets/Notice_V2-dwi0n6kw.png" className="m-auto w-[800px]" />
+          <img src={asset("qdisplay/assets/Notice_V2-dwi0n6kw.png")} className="m-auto w-[800px]" />
         </div>
       </div>
     </div>
