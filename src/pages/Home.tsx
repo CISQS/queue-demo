@@ -1,0 +1,66 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { MonitorPlay } from "lucide-react";
+import StationSelect from "@/components/StationSelect";
+import type { StationKey } from "@/queue/stations";
+
+export default function Home() {
+  const navigate = useNavigate();
+  const [station, setStation] = useState<StationKey>("dr");
+
+  return (
+    <div className="min-h-screen bg-[#e6e6e6] text-[#222]">
+      <div className="h-10 w-full bg-[#2aa9b8]" />
+      <div className="flex items-center justify-between border-b border-black/10 bg-white px-4 py-2">
+        <div className="flex items-center gap-3">
+          <div className="h-6 w-6 rounded bg-[#2aa9b8]" />
+          <div className="text-sm font-semibold">
+            Queue Display System
+            <span className="ml-2 font-normal text-black/60">叫號系統</span>
+          </div>
+        </div>
+        <div className="text-xs font-semibold text-black/50">Home</div>
+      </div>
+
+      <div className="mx-auto max-w-5xl px-6 py-8">
+        <div className="rounded-xl border border-black/10 bg-white">
+          <div className="flex items-center justify-between bg-[#2aa9b8] px-4 py-2 text-sm font-semibold text-white">
+            <div>Queue Display</div>
+          </div>
+
+          <div className="p-6">
+            <div className="rounded-lg border border-black/10 bg-white p-5">
+              <div className="text-sm font-semibold">叫號屏 Queue Display</div>
+
+              <div className="mt-4">
+                <div className="text-xs font-semibold text-black/60">Station 選擇站點</div>
+                <StationSelect value={station} onChange={setStation} className="mt-2" variant="light" />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => navigate(`/display?station=${station}`)}
+                className="mt-5 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#2aa9b8] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#2396a3] focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/35"
+              >
+                <MonitorPlay className="h-4 w-4" />
+                Queue Display
+              </button>
+
+              <button
+                type="button"
+                onClick={() => navigate(`/call?station=${station}`)}
+                className="mt-3 inline-flex h-11 w-full items-center justify-center rounded-lg border border-black/15 bg-white px-4 text-sm font-semibold text-black/80 shadow-sm transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
+              >
+                叫號
+              </button>
+
+              <div className="mt-4 text-xs leading-relaxed text-black/60">
+                提示：於 TV/顯示器開啟後可按 F11 進入全螢幕。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
