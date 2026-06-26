@@ -13,6 +13,11 @@ export type StationQueueState = QueueSnapshot & {
 
 type QueueStoreState = {
   stations: Record<StationKey, StationQueueState>;
+  lastMutation?: {
+    station: StationKey;
+    type: "call" | "complete" | "pass" | "moveCounterTicketToPassed" | "dismissPassedTicket";
+    atISO: string;
+  };
   callTicket: (station: StationKey, ticketInput: string, counter: number) => void;
   completeTicket: (station: StationKey, ticketInput: string, counter: number) => void;
   passTicket: (station: StationKey, ticketInput: string, counter: number) => void;
@@ -155,7 +160,7 @@ export const useQueueStore = create<QueueStoreState>()(
             },
           };
           broadcastStations(nextStations);
-          return { stations: nextStations };
+          return { stations: nextStations, lastMutation: { station, type: "call", atISO: nowIso } };
     });
       },
       completeTicket: (station, ticketInput, counter) => {
@@ -197,7 +202,7 @@ export const useQueueStore = create<QueueStoreState>()(
             },
           };
           broadcastStations(nextStations);
-          return { stations: nextStations };
+          return { stations: nextStations, lastMutation: { station, type: "complete", atISO: nowIso } };
     });
       },
       passTicket: (station, ticketInput, counter) => {
@@ -237,7 +242,7 @@ export const useQueueStore = create<QueueStoreState>()(
             },
           };
           broadcastStations(nextStations);
-          return { stations: nextStations };
+          return { stations: nextStations, lastMutation: { station, type: "pass", atISO: nowIso } };
     });
       },
       moveCounterTicketToPassed: (station, counter) => {
@@ -259,7 +264,7 @@ export const useQueueStore = create<QueueStoreState>()(
             },
           };
           broadcastStations(nextStations);
-          return { stations: nextStations };
+          return { stations: nextStations, lastMutation: { station, type: "moveCounterTicketToPassed", atISO: nowIso } };
         });
       },
       dismissPassedTicket: (station, ticket) => {
@@ -280,7 +285,7 @@ export const useQueueStore = create<QueueStoreState>()(
             },
           };
           broadcastStations(nextStations);
-          return { stations: nextStations };
+          return { stations: nextStations, lastMutation: { station, type: "dismissPassedTicket", atISO: nowIso } };
         });
       },
       cycleCounterTicket: (station, counter) => {
