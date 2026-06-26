@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { MonitorPlay, PhoneCall } from "lucide-react";
+import { Download, MonitorPlay, PhoneCall } from "lucide-react";
 import StationSelect from "@/components/StationSelect";
 import type { StationKey } from "@/queue/stations";
 
@@ -27,6 +27,14 @@ export default function Home() {
         <div className="rounded-xl border border-black/10 bg-white">
           <div className="flex items-center justify-between bg-[#2aa9b8] px-4 py-2 text-sm font-semibold text-white">
             <div>Queue Display</div>
+            <a
+              href={asset("queue-display-offline.html")}
+              download="queue-display-offline.html"
+              className="inline-flex h-8 items-center justify-center gap-2 rounded-md bg-white/15 px-3 text-xs font-semibold text-white transition hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/35"
+            >
+              <Download className="h-3.5 w-3.5" />
+              下載 HTML
+            </a>
           </div>
 
           <div className="p-6">

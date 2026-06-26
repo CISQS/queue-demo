@@ -179,7 +179,6 @@ export const useQueueStore = create<QueueStoreState>()(
         nextQueue = current.next.filter((t) => t !== ticket);
       }
 
-      const recentlyCalled = appendRecentlyCalled(current, ticket, nowIso);
       const passedTickets = current.passedTickets.filter((t) => t !== ticket);
           const counterFromTicket = current.counters.find((c) => c.ticket === ticket)?.counter;
           const targetCounter = counterFromTicket ?? counter;
@@ -194,7 +193,6 @@ export const useQueueStore = create<QueueStoreState>()(
               next: ensuredNext,
               passedTickets,
               counters: nextCounters,
-              recentlyCalled,
               updatedAtISO: nowIso,
             },
           };

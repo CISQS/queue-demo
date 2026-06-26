@@ -5,6 +5,39 @@ import { useQueueSnapshot } from "@/hooks/useQueueSnapshot";
 import { useQueueStore } from "@/queue/store";
 
 const FIXED_MISSED_TICKETS = Array.from({ length: 11 }, (_, idx) => `OPD${String(200 + idx).padStart(3, "0")}`);
+const FIXED_NOTICE_STORAGE_PREFIX = "queue-display-fixed-notice";
+
+function getFixedNoticeStorageKey(station: StationKey) {
+  return `${FIXED_NOTICE_STORAGE_PREFIX}:${station}`;
+}
+
+function loadFixedNoticeState(station: StationKey) {
+  if (typeof window === "undefined") {
+    return { showFixedNoticeTickets: true, hiddenFixedNoticeTickets: [] as string[] };
+  }
+
+  try {
+    const raw = window.localStorage.getItem(getFixedNoticeStorageKey(station));
+    if (!raw) {
+      return { showFixedNoticeTickets: true, hiddenFixedNoticeTickets: [] as string[] };
+    }
+    const parsed = JSON.parse(raw) as {
+      showFixedNoticeTickets?: boolean;
+      hiddenFixedNoticeTickets?: string[];
+    };
+    return {
+      showFixedNoticeTickets: parsed.showFixedNoticeTickets ?? true,
+      hiddenFixedNoticeTickets: Array.isArray(parsed.hiddenFixedNoticeTickets) ? parsed.hiddenFixedNoticeTickets : [],
+    };
+  } catch {
+    return { showFixedNoticeTickets: true, hiddenFixedNoticeTickets: [] as string[] };
+  }
+}
+
+function persistFixedNoticeState(station: StationKey, state: { showFixedNoticeTickets: boolean; hiddenFixedNoticeTickets: string[] }) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(getFixedNoticeStorageKey(station), JSON.stringify(state));
+}
 
 function formatDateTimeDDMMYYYYHHmmss(date: Date) {
   const dd = String(date.getDate()).padStart(2, "0");
@@ -29,14 +62,29 @@ export default function QueueDisplay() {
   const moveCounterTicketToPassed = useQueueStore((s) => s.moveCounterTicketToPassed);
   const dismissPassedTicket = useQueueStore((s) => s.dismissPassedTicket);
   const [now, setNow] = useState(() => new Date());
-  const [showFixedNoticeTickets, setShowFixedNoticeTickets] = useState(true);
-  const [hiddenFixedNoticeTickets, setHiddenFixedNoticeTickets] = useState<Set<string>>(() => new Set());
+  const initialFixedNoticeState = useMemo(() => loadFixedNoticeState(station), [station]);
+  const [showFixedNoticeTickets, setShowFixedNoticeTickets] = useState(initialFixedNoticeState.showFixedNoticeTickets);
+  const [hiddenFixedNoticeTickets, setHiddenFixedNoticeTickets] = useState<Set<string>>(
+    () => new Set(initialFixedNoticeState.hiddenFixedNoticeTickets),
+  );
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    setShowFixedNoticeTickets(initialFixedNoticeState.showFixedNoticeTickets);
+    setHiddenFixedNoticeTickets(new Set(initialFixedNoticeState.hiddenFixedNoticeTickets));
+  }, [initialFixedNoticeState]);
+
+  useEffect(() => {
+    persistFixedNoticeState(station, {
+      showFixedNoticeTickets,
+      hiddenFixedNoticeTickets: [...hiddenFixedNoticeTickets],
+    });
+  }, [station, showFixedNoticeTickets, hiddenFixedNoticeTickets]);
 
   useEffect(() => {
     const update = () => {
@@ -113,6 +161,15 @@ export default function QueueDisplay() {
   const columnLabelZh = station === "dr" ? "診室" : "櫃位";
   const columnLabelEn = station === "dr" ? "Room" : "Counter";
   const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`;
+
+  const handleToggleMockNoticeTickets = () => {
+    if (showFixedNoticeTickets) {
+      setShowFixedNoticeTickets(false);
+      return;
+    }
+    setHiddenFixedNoticeTickets(new Set());
+    setShowFixedNoticeTickets(true);
+  };
 
   return (
     <div className="min-h-screen w-full ui-sans-serif">
@@ -274,7 +331,7 @@ export default function QueueDisplay() {
 
         <button
           type="button"
-          onClick={() => setShowFixedNoticeTickets((prev) => !prev)}
+          onClick={handleToggleMockNoticeTickets}
           className="mb-5 mt-1 flex h-[100px] w-full items-center bg-white box-border text-left text-2xl font-semibold font-sans"
         >
           <svg

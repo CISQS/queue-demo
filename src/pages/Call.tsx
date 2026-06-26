@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { MonitorPlay } from "lucide-react";
 import StationSelect from "@/components/StationSelect";
@@ -17,6 +17,22 @@ export default function Call() {
   const callTicket = useQueueStore((s) => s.callTicket);
   const completeTicket = useQueueStore((s) => s.completeTicket);
   const passTicket = useQueueStore((s) => s.passTicket);
+  const lastCalled = stationState.recentlyCalled[0];
+
+  const lastCallTimeLabel = useMemo(() => {
+    if (!lastCalled?.calledAtISO) return "--";
+    const date = new Date(lastCalled.calledAtISO);
+    if (Number.isNaN(date.getTime())) return "--";
+    return new Intl.DateTimeFormat("zh-HK", {
+      hour12: false,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    }).format(date);
+  }, [lastCalled?.calledAtISO]);
 
   useEffect(() => {
     const counterTicket = stationState.counters.find((item) => item.counter === counter)?.ticket ?? "";
@@ -64,7 +80,8 @@ export default function Call() {
                 const url = `${import.meta.env.BASE_URL}#/display?station=${station}`;
                 window.open(url, "_blank", "noopener,noreferrer");
               }}
-              className="mb-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#2aa9b8] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#2396a3] focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/35"
+              className="mb-4 inline-flex h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#2aa9b8] px-4 text-sm font-semibold text-white shadow-sm transition duration-150 hover:bg-[#2396a3] hover:shadow-md active:translate-y-[1px] active:scale-[0.98] active:bg-[#1e8691] active:shadow-inner focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/35"
+              style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
             >
               <MonitorPlay className="h-4 w-4" />
               Queue Display
@@ -90,23 +107,37 @@ export default function Call() {
                 />
               </div>
 
+              <div className="grid gap-3 rounded-lg border border-black/10 bg-black/[0.02] p-4 sm:grid-cols-2">
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-black/50">Last Called</div>
+                  <div className="mt-1 text-lg font-semibold text-black">{lastCalled?.ticket || "--"}</div>
+                </div>
+                <div>
+                  <div className="text-xs font-semibold uppercase tracking-wide text-black/50">Last Call Time</div>
+                  <div className="mt-1 text-lg font-semibold text-black">{lastCallTimeLabel}</div>
+                </div>
+              </div>
+
               <div className="grid gap-3 sm:grid-cols-3">
                 <button
                   type="button"
                   onClick={() => callTicket(station, ticketInput, counter)}
-                  className="inline-flex h-11 items-center justify-center rounded-lg bg-[#00B18B] px-4 text-sm font-semibold text-white shadow-sm transition hover:bg-[#009a78] focus:outline-none focus:ring-2 focus:ring-[#00B18B]/35"
+                  className="inline-flex h-11 items-center justify-center rounded-lg bg-[#00B18B] px-4 text-sm font-semibold text-white shadow-sm transition duration-150 hover:bg-[#009a78] hover:shadow-md active:translate-y-[1px] active:scale-[0.98] active:bg-[#008f70] active:shadow-inner focus:outline-none focus:ring-2 focus:ring-[#00B18B]/35"
+                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                 >叫號</button>
                 <button
                   type="button"
                   onClick={() => completeTicket(station, ticketInput, counter)}
-                  className="inline-flex h-11 items-center justify-center rounded-lg border border-black/15 bg-white px-4 text-sm font-semibold text-black/80 shadow-sm transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
+                  className="inline-flex h-11 items-center justify-center rounded-lg border border-black/15 bg-white px-4 text-sm font-semibold text-black/80 shadow-sm transition duration-150 hover:bg-black/[0.03] hover:shadow-md active:translate-y-[1px] active:scale-[0.98] active:bg-black/[0.06] active:shadow-inner focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
+                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                 >
                   完成
                 </button>
                 <button
                   type="button"
                   onClick={() => passTicket(station, ticketInput, counter)}
-                  className="inline-flex h-11 items-center justify-center rounded-lg border border-black/15 bg-white px-4 text-sm font-semibold text-black/80 shadow-sm transition hover:bg-black/[0.03] focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
+                  className="inline-flex h-11 items-center justify-center rounded-lg border border-black/15 bg-white px-4 text-sm font-semibold text-black/80 shadow-sm transition duration-150 hover:bg-black/[0.03] hover:shadow-md active:translate-y-[1px] active:scale-[0.98] active:bg-black/[0.06] active:shadow-inner focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
+                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                 >
                   已過號
                 </button>
