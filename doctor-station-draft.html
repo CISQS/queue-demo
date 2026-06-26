@@ -310,8 +310,6 @@
 
       const rows = document.getElementById("rows");
       const clock = document.getElementById("clock");
-      const iconType = new URLSearchParams(window.location.search).get("icon") || "pin";
-
       const state = {
         tickets: ["", "", "", ""],
       };
@@ -334,64 +332,6 @@
 
       function renderClock() {
         clock.textContent = formatDateTimeDDMMYYYYHHmmss(new Date());
-      }
-
-      function getRoomIconSvg() {
-        if (iconType === "door") {
-          return `
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M5 20V5.8C5 5.08 5.58 4.5 6.3 4.5H14.2C14.92 4.5 15.5 5.08 15.5 5.8V20"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path d="M15.5 12H20V20H15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M12 12.5h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-            </svg>
-          `;
-        }
-
-        if (iconType === "tag") {
-          return `
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M3 12V5.8C3 5.08 3.58 4.5 4.3 4.5H10.7L21 14.8L14.8 21L4.5 10.7V12Z"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linejoin="round"
-              />
-              <path d="M7.5 8.2h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
-            </svg>
-          `;
-        }
-
-        if (iconType === "home") {
-          return `
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M4 11.2L12 4.5L20 11.2V20H4V11.2Z"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linejoin="round"
-              />
-              <path d="M10 20V14.5H14V20" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
-            </svg>
-          `;
-        }
-
-        return `
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M12 21s-6-5.2-6-10a6 6 0 1 1 12 0c0 4.8-6 10-6 10Z"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linejoin="round"
-            />
-            <path d="M12 11.5h.01" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" />
-          </svg>
-        `;
       }
 
       function renderRows() {
@@ -428,7 +368,6 @@
           room.className = "doctor-room";
           room.innerHTML = `
             <div class="room-label">
-              ${getRoomIconSvg()}
               <span>Room</span>
             </div>
             <div class="room-letter">${DOCTOR_ROOMS[i]}</div>
