@@ -290,11 +290,17 @@ export default function QueueDisplay() {
                       e.currentTarget.style.display = "none";
                     }}
                   />
-                  <div className="ml-5 cursor-pointer text-2xl font-bold">
-                    {stationOption.labelZh}
-                    <br />
-                    {stationOption.labelEn}
-                  </div>
+                  {station === "dr" ? (
+                    <div className="ml-5 cursor-pointer text-2xl font-bold">
+                      {displayStationZh} {displayStationEn}
+                    </div>
+                  ) : (
+                    <div className="ml-5 cursor-pointer text-2xl font-bold">
+                      {displayStationZh}
+                      <br />
+                      {displayStationEn}
+                    </div>
+                  )}
                 </button>
                 <button
                   type="button"
@@ -348,7 +354,7 @@ export default function QueueDisplay() {
                       <tr key={`counter-row-${row.counter}`}>
                         <td className="pr-8 align-middle">
                           {row.ticket ? (
-                            <div className="flex h-20 w-full min-w-[360px] items-center justify-center bg-[#edeedd] font-sans text-[40px] font-semibold tabular-nums">
+                            <div className="flex h-24 w-full min-w-[420px] items-center justify-center bg-[#edeedd] font-sans text-[42px] font-semibold tabular-nums">
                               {row.ticket}
                             </div>
                           ) : (
@@ -361,7 +367,7 @@ export default function QueueDisplay() {
                                   return next;
                                 });
                               }}
-                              className="flex h-20 w-full min-w-[360px] items-center justify-center bg-[#edeedd] font-sans text-[40px] font-semibold tabular-nums"
+                              className="flex h-24 w-full min-w-[420px] items-center justify-center bg-[#edeedd] font-sans text-[42px] font-semibold tabular-nums"
                               style={{
                                 touchAction: "manipulation",
                                 WebkitTapHighlightColor: "transparent",
@@ -382,7 +388,7 @@ export default function QueueDisplay() {
                                 return next;
                               });
                             }}
-                            className="flex h-20 w-full min-w-[320px] items-center justify-center bg-[#edeedd] px-4 text-center font-sans text-[33px] font-semibold leading-none"
+                            className="flex h-24 w-full min-w-[360px] items-center justify-center bg-[#edeedd] px-4 text-center font-sans text-[35px] font-semibold leading-none"
                             style={{
                               touchAction: "manipulation",
                               WebkitTapHighlightColor: "transparent",
