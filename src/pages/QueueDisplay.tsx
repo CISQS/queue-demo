@@ -7,6 +7,7 @@ import { useQueueStore } from "@/queue/store";
 const FIXED_MISSED_TICKETS = Array.from({ length: 11 }, (_, idx) => `OPD${String(200 + idx).padStart(3, "0")}`);
 const FIXED_NOTICE_STORAGE_PREFIX = "queue-display-fixed-notice";
 const DOCTOR_NAMES = ["常健康", "常開心", "常快樂", "常輕鬆"];
+const MOCK_TICKET = "OPD001";
 
 function getFixedNoticeStorageKey(station: StationKey) {
   return `${FIXED_NOTICE_STORAGE_PREFIX}:${station}`;
@@ -57,6 +58,8 @@ export default function QueueDisplay() {
   const station: StationKey = isStationKey(stationFromQuery) ? stationFromQuery : "dr";
 
   const stationOption = useMemo(() => getStationOption(station), [station]);
+  const displayStationZh = station === "dr" ? "醫生站" : stationOption.labelZh;
+  const displayStationEn = station === "dr" ? "Doctor Station" : stationOption.labelEn;
 
   const { snapshot, passedTickets } = useQueueSnapshot(station);
   const cycleCounterTicket = useQueueStore((s) => s.cycleCounterTicket);
@@ -69,11 +72,18 @@ export default function QueueDisplay() {
     () => new Set(initialFixedNoticeState.hiddenFixedNoticeTickets),
   );
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [doctorMockTickets, setDoctorMockTickets] = useState<string[]>(() => Array.from({ length: 4 }).map(() => ""));
+  const [nurseMockTicket, setNurseMockTicket] = useState("");
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    setDoctorMockTickets(Array.from({ length: 4 }).map(() => ""));
+    setNurseMockTicket("");
+  }, [station]);
 
   useEffect(() => {
     setShowFixedNoticeTickets(initialFixedNoticeState.showFixedNoticeTickets);
@@ -177,6 +187,7 @@ export default function QueueDisplay() {
   };
 
   if (station === "nurse") {
+    const nurseDisplayTicket = nurseTicket || nurseMockTicket;
     return (
       <div className="min-h-screen w-full ui-sans-serif">
         <div className="flex min-h-screen w-full flex-col bg-gradient-to-b from-[#f1e8c4] to-[#dff0cc] text-black">
@@ -191,9 +202,9 @@ export default function QueueDisplay() {
                   }}
                 />
                 <div className="ml-5 cursor-pointer text-2xl font-bold">
-                  {stationOption.labelZh}
+                  {displayStationZh}
                   <br />
-                  {stationOption.labelEn}
+                  {displayStationEn}
                 </div>
               </button>
               <button
@@ -237,7 +248,21 @@ export default function QueueDisplay() {
           </div>
 
           <div className="flex flex-1 items-center justify-center px-10">
-            <div className="font-sans text-[120px] font-semibold tabular-nums">{nurseTicket}</div>
+            <button
+              type="button"
+              onClick={() => {
+                if (nurseTicket) return;
+                if (nurseMockTicket) setNurseMockTicket("");
+                else setNurseMockTicket(MOCK_TICKET);
+              }}
+              className="font-sans text-[120px] font-semibold tabular-nums"
+              style={{
+                touchAction: "manipulation",
+                WebkitTapHighlightColor: "transparent",
+              }}
+            >
+              {nurseDisplayTicket}
+            </button>
           </div>
         </div>
       </div>
@@ -314,14 +339,52 @@ export default function QueueDisplay() {
                     {rows.map((row, index) => (
                       <tr key={`counter-row-${row.counter}`}>
                         <td className="pr-8 align-middle">
-                          <div className="flex h-16 w-full min-w-[320px] items-center justify-center bg-[#edeedd] font-sans text-4xl font-semibold tabular-nums">
-                            {row.ticket}
-                          </div>
+                          {row.ticket ? (
+                            <div className="flex h-20 w-full min-w-[280px] items-center justify-center bg-[#edeedd] font-sans text-[40px] font-semibold tabular-nums">
+                              {row.ticket}
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              disabled={!doctorMockTickets[index]}
+                              onClick={() => {
+                                if (!doctorMockTickets[index]) return;
+                                setDoctorMockTickets((prev) => {
+                                  const next = [...prev];
+                                  next[index] = "";
+                                  return next;
+                                });
+                              }}
+                              className="flex h-20 w-full min-w-[280px] items-center justify-center bg-[#edeedd] font-sans text-[40px] font-semibold tabular-nums disabled:cursor-default"
+                              style={{
+                                touchAction: "manipulation",
+                                WebkitTapHighlightColor: "transparent",
+                              }}
+                            >
+                              {doctorMockTickets[index]}
+                            </button>
+                          )}
                         </td>
                         <td className="align-middle">
-                          <div className="flex h-16 w-full min-w-[224px] items-center justify-center bg-[#edeedd] px-4 text-center font-sans text-[30px] font-semibold leading-none">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (row.ticket) return;
+                              if (doctorMockTickets[index]) return;
+                              setDoctorMockTickets((prev) => {
+                                const next = [...prev];
+                                next[index] = MOCK_TICKET;
+                                return next;
+                              });
+                            }}
+                            className="flex h-20 w-full min-w-[260px] items-center justify-center bg-[#edeedd] px-4 text-center font-sans text-[33px] font-semibold leading-none"
+                            style={{
+                              touchAction: "manipulation",
+                              WebkitTapHighlightColor: "transparent",
+                            }}
+                          >
                             {DOCTOR_NAMES[index] ?? ""}
-                          </div>
+                          </button>
                         </td>
                       </tr>
                     ))}

@@ -394,6 +394,7 @@
       font-weight: 600;
       color: #000;
       letter-spacing: 0.02em;
+      cursor: pointer;
     }
 
     .doctor-table-wrap {
@@ -421,24 +422,28 @@
     .doctor-ticket-box,
     .doctor-name-box {
       display: flex;
-      height: 64px;
+      height: 80px;
       align-items: center;
       justify-content: center;
       background: #edeedd;
+      border: 0;
+      cursor: pointer;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .doctor-ticket-box {
-      min-width: 320px;
+      min-width: 280px;
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 40px;
+      font-size: 42px;
       font-weight: 600;
     }
 
     .doctor-name-box {
-      min-width: 224px;
+      min-width: 260px;
       padding: 0 16px;
       font-family: Arial, Helvetica, sans-serif;
-      font-size: 30px;
+      font-size: 33px;
       font-weight: 600;
       line-height: 1;
       text-align: center;
@@ -535,7 +540,7 @@
 
   <script>
     const STATIONS = [
-      { key: "dr", labelZh: "醫生診室", labelEn: "Dr Station", wait: 15, columnZh: "醫生", columnEn: "Doctor" },
+      { key: "dr", labelZh: "醫生站", labelEn: "Doctor Station", wait: 15, columnZh: "醫生", columnEn: "Doctor" },
       { key: "nurse", labelZh: "護士分流站", labelEn: "Nurse Station", wait: 10, columnZh: "櫃位", columnEn: "Counter" },
       { key: "pharmacy", labelZh: "藥房", labelEn: "Pharmacy", wait: 20, columnZh: "櫃位", columnEn: "Counter" }
     ];
@@ -689,6 +694,14 @@
       renderNotice();
     }
 
+    function toggleNurseMockTicket() {
+      if (currentStation().key !== "nurse") return;
+      const row = rowsState.find((item) => item.counter === 1);
+      if (!row) return;
+      row.ticket = row.ticket ? "" : "OPD001";
+      applyStationLayout();
+    }
+
     function dismissPassedTicket(ticket) {
       const nextPassedTickets = passedTickets.filter((item) => item !== ticket);
       if (nextPassedTickets.length !== passedTickets.length) {
@@ -713,15 +726,27 @@
 
           const ticketCell = document.createElement("td");
           ticketCell.className = "doctor-ticket-cell";
-          const ticketBox = document.createElement("div");
+          const ticketBox = document.createElement("button");
+          ticketBox.type = "button";
           ticketBox.className = "doctor-ticket-box";
           ticketBox.textContent = row.ticket;
+          ticketBox.addEventListener("click", () => {
+            if (!row.ticket) return;
+            row.ticket = "";
+            renderRows();
+          });
           ticketCell.appendChild(ticketBox);
 
           const doctorCell = document.createElement("td");
-          const doctorBox = document.createElement("div");
+          const doctorBox = document.createElement("button");
+          doctorBox.type = "button";
           doctorBox.className = "doctor-name-box";
           doctorBox.textContent = DOCTOR_NAMES[index] || "";
+          doctorBox.addEventListener("click", () => {
+            if (row.ticket) return;
+            row.ticket = "OPD001";
+            renderRows();
+          });
           doctorCell.appendChild(doctorBox);
 
           tr.appendChild(ticketCell);
@@ -812,6 +837,7 @@
       renderNotice();
     });
 
+    nurseTicket.addEventListener("click", toggleNurseMockTicket);
     fullscreenToggle.addEventListener("click", toggleFullscreen);
 
     renderClock();
