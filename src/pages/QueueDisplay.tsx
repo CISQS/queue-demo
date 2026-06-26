@@ -71,6 +71,7 @@ export default function QueueDisplay() {
   const cycleCounterTicket = useQueueStore((s) => s.cycleCounterTicket);
   const moveCounterTicketToPassed = useQueueStore((s) => s.moveCounterTicketToPassed);
   const dismissPassedTicket = useQueueStore((s) => s.dismissPassedTicket);
+  const clearCounterTicket = useQueueStore((s) => s.clearCounterTicket);
   const [now, setNow] = useState(() => new Date());
   const initialFixedNoticeState = useMemo(() => loadFixedNoticeState(station), [station]);
   const [showFixedNoticeTickets, setShowFixedNoticeTickets] = useState(initialFixedNoticeState.showFixedNoticeTickets);
@@ -258,7 +259,6 @@ export default function QueueDisplay() {
             <button
               type="button"
               onClick={() => {
-                if (nurseTicket && !nurseMockTicket && !nurseTicketIsMock) return;
                 const base = nurseMockTicket || (nurseTicketIsMock ? nurseTicket : "");
                 setNurseMockTicket(nextMockTicket(base));
               }}
@@ -353,29 +353,27 @@ export default function QueueDisplay() {
                     {rows.map((row, index) => (
                       <tr key={`counter-row-${row.counter}`}>
                         <td className="pr-8 align-middle">
-                          {row.ticket ? (
-                            <div className="flex h-24 w-full min-w-[420px] items-center justify-center bg-[#edeedd] font-sans text-[42px] font-semibold tabular-nums">
-                              {row.ticket}
-                            </div>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setDoctorMockTickets((prev) => {
-                                  const next = [...prev];
-                                  next[index] = nextMockTicket(next[index] ?? "");
-                                  return next;
-                                });
-                              }}
-                              className="flex h-24 w-full min-w-[420px] items-center justify-center bg-[#edeedd] font-sans text-[42px] font-semibold tabular-nums"
-                              style={{
-                                touchAction: "manipulation",
-                                WebkitTapHighlightColor: "transparent",
-                              }}
-                            >
-                              {doctorMockTickets[index]}
-                            </button>
-                          )}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (row.ticket) {
+                                clearCounterTicket("dr", Number(row.counter));
+                                return;
+                              }
+                              setDoctorMockTickets((prev) => {
+                                const next = [...prev];
+                                next[index] = "";
+                                return next;
+                              });
+                            }}
+                            className="flex h-24 w-full min-w-[420px] items-center justify-center bg-[#edeedd] font-sans text-[42px] font-semibold tabular-nums"
+                            style={{
+                              touchAction: "manipulation",
+                              WebkitTapHighlightColor: "transparent",
+                            }}
+                          >
+                            {row.ticket || doctorMockTickets[index]}
+                          </button>
                         </td>
                         <td className="align-middle">
                           <button

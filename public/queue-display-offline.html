@@ -409,6 +409,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      border: 0;
+      background: transparent;
       font-family: Arial, Helvetica, sans-serif;
       font-size: 120px;
       font-weight: 600;
@@ -510,7 +512,7 @@
     <div id="nurseScreen" class="nurse-screen" style="display:none">
       <div class="nurse-top">護士分流站 Nurse Station</div>
       <div class="nurse-body">
-        <div id="nurseTicket" class="nurse-ticket"></div>
+        <button id="nurseTicket" class="nurse-ticket" type="button" aria-label="點擊循環顯示測試票號"></button>
       </div>
     </div>
 
@@ -776,7 +778,7 @@
           ticketBox.className = "doctor-ticket-box";
           ticketBox.textContent = row.ticket;
           ticketBox.addEventListener("click", () => {
-            row.ticket = nextMockTicket(row.ticket);
+            row.ticket = "";
             renderRows();
           });
           ticketCell.appendChild(ticketBox);
