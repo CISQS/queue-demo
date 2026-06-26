@@ -26,6 +26,7 @@ export default function QueueDisplay() {
 
   const { snapshot, passedTickets } = useQueueSnapshot(station);
   const cycleCounterTicket = useQueueStore((s) => s.cycleCounterTicket);
+  const dismissPassedTicket = useQueueStore((s) => s.dismissPassedTicket);
   const [now, setNow] = useState(() => new Date());
   const [showFixedNoticeTickets, setShowFixedNoticeTickets] = useState(true);
 
@@ -118,6 +119,10 @@ export default function QueueDisplay() {
                   type="button"
                   onClick={() => cycleCounterTicket(station, Number(row.counter))}
                   className="flex h-16 w-56 items-center justify-center bg-[#edeedd] font-sans text-4xl font-semibold tabular-nums"
+                  style={{
+                    touchAction: "manipulation",
+                    WebkitTapHighlightColor: "transparent",
+                  }}
                 >
                   {row.ticket ? row.counter : ""}
                 </button>
@@ -227,12 +232,18 @@ export default function QueueDisplay() {
 
         <div className="flex w-full flex-1 flex-wrap content-start overflow-auto bg-[#f6f9f1] p-4 box-border font-sans text-[#53524d]">
           {noticeTickets.map((t) => (
-            <div
+            <button
               key={`passed-${t}`}
+              type="button"
+              onClick={() => dismissPassedTicket(station, t)}
               className="mr-3 mb-3 rounded bg-white px-4 py-2 text-3xl font-semibold tabular-nums shadow-sm md:text-4xl"
+              style={{
+                touchAction: "manipulation",
+                WebkitTapHighlightColor: "transparent",
+              }}
             >
               {t}
-            </div>
+            </button>
           ))}
           {showFixedNoticeTickets
             ? FIXED_MISSED_TICKETS.map((t) => (

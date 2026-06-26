@@ -16,6 +16,7 @@ type QueueStoreState = {
   callTicket: (station: StationKey, ticketInput: string, counter: number) => void;
   completeTicket: (station: StationKey, ticketInput: string, counter: number) => void;
   passTicket: (station: StationKey, ticketInput: string, counter: number) => void;
+  dismissPassedTicket: (station: StationKey, ticket: string) => void;
   cycleCounterTicket: (station: StationKey, counter: number) => void;
 };
 
@@ -58,15 +59,8 @@ function normalizeTicket(input: string) {
   return input.trim();
 }
 
-function uniqStable(items: string[]) {
-  const seen = new Set<string>();
-  const out: string[] = [];
-  for (const item of items) {
-    if (seen.has(item)) continue;
-    seen.add(item);
-    out.push(item);
-  }
-  return out;
+function appendPassedTicket(items: string[], ticket: string) {
+  return [...items.filter((item) => item !== ticket), ticket].slice(-120);
 }
 
 const COUNTER_CYCLE = ["OPD001", "OPD002", "OPD003", ""];
@@ -226,7 +220,7 @@ export const useQueueStore = create<QueueStoreState>()(
         nextQueue = current.next.slice(1);
       }
 
-      const passedTickets = uniqStable([ticket, ...current.passedTickets]).slice(0, 120);
+      const passedTickets = appendPassedTicket(current.passedTickets, ticket);
           const counterFromTicket = current.counters.find((c) => c.ticket === ticket)?.counter;
           const targetCounter = counterFromTicket ?? counter;
           const nextCounters = current.counters.map((c) => (c.counter === targetCounter ? { ...c, ticket: "" } : c));
@@ -246,6 +240,27 @@ export const useQueueStore = create<QueueStoreState>()(
           broadcastStations(nextStations);
           return { stations: nextStations };
     });
+      },
+      dismissPassedTicket: (station, ticket) => {
+        const nowIso = new Date().toISOString();
+        set((s) => {
+          const current = s.stations[station];
+          const passedTickets = current.passedTickets.filter((t) => t !== ticket);
+          if (passedTickets.length === current.passedTickets.length) {
+            return s;
+          }
+
+          const nextStations = {
+            ...s.stations,
+            [station]: {
+              ...current,
+              passedTickets,
+              updatedAtISO: nowIso,
+            },
+          };
+          broadcastStations(nextStations);
+          return { stations: nextStations };
+        });
       },
       cycleCounterTicket: (station, counter) => {
         const nowIso = new Date().toISOString();
