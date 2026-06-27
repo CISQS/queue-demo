@@ -7,6 +7,7 @@ import { useQueueStore } from "@/queue/store";
 const FIXED_MISSED_TICKETS = Array.from({ length: 11 }, (_, idx) => `OPD${String(200 + idx).padStart(3, "0")}`);
 const FIXED_NOTICE_STORAGE_PREFIX = "queue-display-fixed-notice";
 const DOCTOR_NAMES = ["常健康", "常開心", "常快樂", "常輕鬆"];
+const DOCTOR_ROOMS = ["A", "B", "C", "D"];
 const MOCK_TICKET_CYCLE = ["", "OPD001", "OPD002", "OPD003", "OPD004"];
 
 function nextMockTicket(current: string) {
@@ -390,13 +391,26 @@ export default function QueueDisplay() {
                                 return next;
                               });
                             }}
-                            className="flex h-24 w-full min-w-[360px] items-center justify-center bg-[#edeedd] px-4 text-center font-sans text-[35px] font-semibold leading-none"
+                            className="flex h-24 w-full min-w-[360px] items-center justify-stretch overflow-hidden rounded-[14px] bg-gradient-to-b from-[#f2f0e3] to-[#e6e2cf] px-0 text-center font-sans text-[35px] font-semibold leading-none shadow-[inset_0_0_0_1px_rgba(83,82,77,0.06),0_10px_20px_rgba(61,39,20,0.08)]"
                             style={{
                               touchAction: "manipulation",
                               WebkitTapHighlightColor: "transparent",
                             }}
                           >
-                            {DOCTOR_NAMES[index] ?? ""}
+                            <div className="relative m-2 flex w-[102px] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[14px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 py-[9px] text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-7 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
+                              <div
+                                className="relative z-[1] text-[39px] font-black leading-none tracking-[0.04em]"
+                                style={{ textShadow: "0 2px 6px rgba(0, 0, 0, 0.18)" }}
+                              >
+                                {DOCTOR_ROOMS[index] ?? ""}
+                              </div>
+                              <div className="relative z-[1] text-[9px] font-bold uppercase tracking-[0.12em] opacity-80">
+                                ROOM
+                              </div>
+                            </div>
+                            <div className="flex flex-1 items-center justify-center px-5 text-center text-[36px] font-extrabold tracking-[0.01em] text-[#2f2b23]">
+                              {DOCTOR_NAMES[index] ?? ""}
+                            </div>
                           </button>
                         </td>
                       </tr>
