@@ -136,14 +136,14 @@
       }
 
       .doctor-room {
-        width: 122px;
+        width: 102px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        gap: 2px;
+        gap: 1px;
         margin: 8px;
-        padding: 8px 8px 10px;
+        padding: 8px 8px 9px;
         border-radius: 14px;
         background: linear-gradient(180deg, #0f8b6d 0%, #15735e 100%);
         color: #fffdf4;
@@ -164,30 +164,11 @@
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
       }
 
-      .doctor-room .room-label {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 0.16em;
-        text-transform: uppercase;
-        opacity: 0.9;
-      }
-
-      .doctor-room .room-label svg {
-        width: 14px;
-        height: 14px;
-        flex: 0 0 auto;
-      }
-
       .doctor-room .room-letter {
         position: relative;
         z-index: 1;
         line-height: 1;
-        font-size: 40px;
+        font-size: 39px;
         font-weight: 900;
         letter-spacing: 0.04em;
         text-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
@@ -196,7 +177,7 @@
       .doctor-room .room-caption {
         position: relative;
         z-index: 1;
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 700;
         letter-spacing: 0.12em;
         text-transform: uppercase;
@@ -367,21 +348,12 @@
           const room = document.createElement("div");
           room.className = "doctor-room";
           room.innerHTML = `
-            <div class="room-label">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M5 20V6.8C5 5.81 5.81 5 6.8 5H14.2C15.19 5 16 5.81 16 6.8V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M10 12H10.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M3 20H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-                <path d="M16 9H19V20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
-              </svg>
-              <span>Room</span>
-            </div>
             <div class="room-letter">${DOCTOR_ROOMS[i]}</div>
             <div class="room-caption">Consult</div>
           `;
 
-          doctorInner.appendChild(name);
           doctorInner.appendChild(room);
+          doctorInner.appendChild(name);
           doctor.appendChild(doctorInner);
 
           row.appendChild(ticket);
