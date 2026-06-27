@@ -6,6 +6,8 @@ export type StationOption = {
   labelZh: string;
 };
 
+const LAST_STATION_STORAGE_KEY = "queue-display:last-station";
+
 export const STATIONS: StationOption[] = [
   { key: "dr", labelEn: "Doctor Station", labelZh: "醫生站" },
   { key: "nurse", labelEn: "Nurse Station", labelZh: "護士分流站" },
@@ -26,4 +28,15 @@ export function getStationOption(stationKey: StationKey): StationOption {
     return STATIONS[0];
   }
   return station;
+}
+
+export function getLastStation(defaultStation: StationKey = "dr"): StationKey {
+  if (typeof window === "undefined") return defaultStation;
+  const saved = window.localStorage.getItem(LAST_STATION_STORAGE_KEY);
+  return saved && isStationKey(saved) ? saved : defaultStation;
+}
+
+export function setLastStation(station: StationKey) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(LAST_STATION_STORAGE_KEY, station);
 }
