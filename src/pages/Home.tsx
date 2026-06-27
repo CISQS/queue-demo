@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Download, MonitorPlay, PhoneCall } from "lucide-react";
 import StationSelect from "@/components/StationSelect";
-import type { StationKey } from "@/queue/stations";
+import { getLastStation, setLastStation, type StationKey } from "@/queue/stations";
 
 export default function Home() {
   const navigate = useNavigate();
-  const [station, setStation] = useState<StationKey>("dr");
+  const [station, setStation] = useState<StationKey>(() => getLastStation());
   const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`;
+
+  useEffect(() => {
+    setLastStation(station);
+  }, [station]);
 
   const toggleFullscreen = async () => {
     const doc = document as Document & {

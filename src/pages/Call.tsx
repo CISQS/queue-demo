@@ -2,13 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { MonitorPlay } from "lucide-react";
 import StationSelect from "@/components/StationSelect";
-import { isStationKey, type StationKey } from "@/queue/stations";
+import { getLastStation, isStationKey, setLastStation, type StationKey } from "@/queue/stations";
 import { useQueueStore } from "@/queue/store";
 
 export default function Call() {
   const navigate = useNavigate();
   const [params, setParams] = useSearchParams();
-  const stationFromQuery = params.get("station") ?? "dr";
+  const stationFromQuery = params.get("station") ?? getLastStation();
   const station: StationKey = isStationKey(stationFromQuery) ? stationFromQuery : "dr";
   const isNurseStation = station === "nurse";
   const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`;
@@ -44,6 +44,10 @@ export default function Call() {
   useEffect(() => {
     if (isNurseStation) setCounter(1);
   }, [isNurseStation]);
+
+  useEffect(() => {
+    setLastStation(station);
+  }, [station]);
 
   const toggleFullscreen = async () => {
     const doc = document as Document & {
@@ -138,7 +142,10 @@ export default function Call() {
                 <div className="text-xs font-semibold text-black/60">Station</div>
                 <StationSelect
                   value={station}
-                  onChange={(next) => setParams({ station: next })}
+                  onChange={(next) => {
+                    setLastStation(next);
+                    setParams({ station: next });
+                  }}
                   className="mt-2"
                   variant="light"
                 />

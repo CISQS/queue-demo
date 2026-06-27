@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getStationOption, isStationKey, type StationKey } from "@/queue/stations";
+import { getLastStation, getStationOption, isStationKey, setLastStation, type StationKey } from "@/queue/stations";
 import { useQueueSnapshot } from "@/hooks/useQueueSnapshot";
 import { useQueueStore } from "@/queue/store";
 
@@ -60,7 +60,7 @@ function formatDateTimeDDMMYYYYHHmmss(date: Date) {
 export default function QueueDisplay() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const stationFromQuery = params.get("station") ?? "dr";
+  const stationFromQuery = params.get("station") ?? getLastStation();
   const station: StationKey = isStationKey(stationFromQuery) ? stationFromQuery : "dr";
 
   const stationOption = useMemo(() => getStationOption(station), [station]);
@@ -86,6 +86,10 @@ export default function QueueDisplay() {
     const timer = window.setInterval(() => setNow(new Date()), 1000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    setLastStation(station);
+  }, [station]);
 
   useEffect(() => {
     setDoctorMockTickets(Array.from({ length: 4 }).map(() => ""));
