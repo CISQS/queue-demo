@@ -11,7 +11,7 @@ export function startDailyResetWatcher() {
   };
 
   run();
-  window.setInterval(run, 60_000);
+  window.setInterval(run, 1_000);
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") {
       run();

@@ -50,17 +50,20 @@ function padNumber(value: number, length: number) {
   return String(value).padStart(length, "0");
 }
 
-function getHongKongDateKey(date = new Date()) {
+function getHongKongResetKey(date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "Asia/Hong_Kong",
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
+    hour: "2-digit",
+    hourCycle: "h23",
   }).formatToParts(date);
   const year = parts.find((part) => part.type === "year")?.value ?? "0000";
   const month = parts.find((part) => part.type === "month")?.value ?? "01";
   const day = parts.find((part) => part.type === "day")?.value ?? "01";
-  return `${year}-${month}-${day}`;
+  const hour = parts.find((part) => part.type === "hour")?.value ?? "00";
+  return `${year}-${month}-${day}-${hour}`;
 }
 
 function parseTicket(ticket: string) {
@@ -100,7 +103,7 @@ function buildInitialStation(station: StationKey): StationQueueState {
   const next = Array.from({ length: 30 }).map((_, idx) => `${prefix}${padNumber(2 + idx, 3)}`);
   return {
     station,
-    resetDateKey: getHongKongDateKey(),
+    resetDateKey: getHongKongResetKey(),
     nowServing,
     next,
     recentlyCalled: [],
@@ -366,7 +369,7 @@ export const useQueueStore = create<QueueStoreState>()(
       },
       ensureDailyReset: () => {
         const nowIso = new Date().toISOString();
-        const resetDateKey = getHongKongDateKey();
+        const resetDateKey = getHongKongResetKey();
         (["dr", "nurse", "pharmacy"] as StationKey[]).forEach((station) => {
           const current = get().stations[station];
           if (current.resetDateKey === resetDateKey) return;
