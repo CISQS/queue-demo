@@ -360,80 +360,74 @@ export default function QueueDisplay() {
         </div>
 
         {station === "dr" ? (
-          <div className="w-full px-10 pt-4 pb-2">
-            <table className="w-full border-separate border-spacing-y-4 text-black">
-              <thead>
-                <tr className="text-4xl">
-                  <th className="pb-2 text-left font-normal">號碼 Number</th>
-                  <th className="pb-2 text-left font-normal">
-                    {columnLabelZh} {columnLabelEn}
-                  </th>
-                </tr>
-              </thead>
-                  <tbody>
-                    {rows.map((row, index) => (
-                      <tr key={`counter-row-${row.counter}`}>
-                        <td className="pr-8 align-middle">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (row.ticket) {
-                                clearCounterTicket("dr", Number(row.counter));
-                                return;
-                              }
-                              setDoctorMockTickets((prev) => {
-                                const next = [...prev];
-                                next[index] = "";
-                                return next;
-                              });
-                            }}
-                            className="flex h-24 w-full min-w-[420px] items-center justify-center bg-[#edeedd] font-sans text-[42px] font-semibold tabular-nums"
-                            style={{
-                              touchAction: "manipulation",
-                              WebkitTapHighlightColor: "transparent",
-                            }}
-                          >
-                            {row.ticket || doctorMockTickets[index]}
-                          </button>
-                        </td>
-                        <td className="align-middle">
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (row.ticket) return;
-                              setDoctorMockTickets((prev) => {
-                                const next = [...prev];
-                                next[index] = nextMockTicket(next[index] ?? "");
-                                return next;
-                              });
-                            }}
-                            className="flex h-24 w-full min-w-[360px] items-center justify-stretch overflow-hidden rounded-[14px] bg-gradient-to-b from-[#f2f0e3] to-[#e6e2cf] px-0 text-center font-sans text-[35px] font-semibold leading-none shadow-[inset_0_0_0_1px_rgba(83,82,77,0.06),0_10px_20px_rgba(61,39,20,0.08)]"
-                            style={{
-                              touchAction: "manipulation",
-                              WebkitTapHighlightColor: "transparent",
-                            }}
-                          >
-                            <div className="relative m-2 flex w-[102px] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[14px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 py-[9px] text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-7 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
-                              <div
-                                className="relative z-[1] text-[39px] font-black leading-none tracking-[0.04em]"
-                                style={{ textShadow: "0 2px 6px rgba(0, 0, 0, 0.18)" }}
-                              >
-                                {DOCTOR_ROOMS[index] ?? ""}
-                              </div>
-                              <div className="relative z-[1] text-[9px] font-bold uppercase tracking-[0.12em] opacity-80">
-                                ROOM
-                              </div>
-                            </div>
-                            <div className="flex flex-1 items-center justify-center px-5 text-center text-[36px] font-extrabold tracking-[0.01em] text-[#2f2b23]">
-                              {DOCTOR_NAMES[index] ?? ""}
-                            </div>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          <div className="w-full px-10 pt-4 pb-2 text-black">
+            <div className="flex items-end justify-between pb-2 text-4xl font-normal">
+              <div className="w-[42%]">號碼 Number</div>
+              <div className="flex-1 pl-8">
+                {columnLabelZh} {columnLabelEn}
               </div>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              {rows.map((row, index) => (
+                <div key={`counter-row-${row.counter}`} className="flex items-stretch gap-8">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (row.ticket) {
+                        clearCounterTicket("dr", Number(row.counter));
+                        return;
+                      }
+                      setDoctorMockTickets((prev) => {
+                        const next = [...prev];
+                        next[index] = "";
+                        return next;
+                      });
+                    }}
+                    className="flex h-24 w-[42%] min-w-0 items-center justify-center rounded-[14px] bg-[#edeedd] font-sans text-[clamp(34px,4.6vw,56px)] font-semibold tabular-nums"
+                    style={{
+                      touchAction: "manipulation",
+                      WebkitTapHighlightColor: "transparent",
+                    }}
+                  >
+                    {row.ticket || doctorMockTickets[index]}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (row.ticket) return;
+                      setDoctorMockTickets((prev) => {
+                        const next = [...prev];
+                        next[index] = nextMockTicket(next[index] ?? "");
+                        return next;
+                      });
+                    }}
+                    className="flex h-24 min-w-0 flex-1 items-center justify-stretch overflow-hidden rounded-[14px] bg-gradient-to-b from-[#f2f0e3] to-[#e6e2cf] px-0 text-center font-sans font-semibold leading-none shadow-[inset_0_0_0_1px_rgba(83,82,77,0.06),0_10px_20px_rgba(61,39,20,0.08)]"
+                    style={{
+                      touchAction: "manipulation",
+                      WebkitTapHighlightColor: "transparent",
+                    }}
+                  >
+                    <div className="relative m-2 flex w-[102px] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[14px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 py-[9px] text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-7 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
+                      <div
+                        className="relative z-[1] text-[clamp(30px,3.8vw,44px)] font-black leading-none tracking-[0.04em]"
+                        style={{ textShadow: "0 2px 6px rgba(0, 0, 0, 0.18)" }}
+                      >
+                        {DOCTOR_ROOMS[index] ?? ""}
+                      </div>
+                      <div className="relative z-[1] text-[clamp(8px,1vw,10px)] font-bold uppercase tracking-[0.12em] opacity-80">
+                        ROOM
+                      </div>
+                    </div>
+                    <div className="flex min-w-0 flex-1 items-center justify-center px-5 text-center text-[clamp(28px,3.8vw,48px)] font-extrabold tracking-[0.01em] text-[#2f2b23]">
+                      {DOCTOR_NAMES[index] ?? ""}
+                    </div>
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
             ) : (
               <div className="h-[380px] w-full">
                 <div className="box-border flex justify-between px-10 py-2 text-4xl">
