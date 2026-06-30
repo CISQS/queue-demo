@@ -560,7 +560,7 @@ export default function QueueDisplay() {
                   </svg>
                   Now Serving
                 </div>
-                <div className="flex min-h-0 flex-1 flex-col divide-y divide-black/10">
+                <div className="flex min-h-0 flex-1 flex-col divide-y divide-black/10 bg-[#f8fbf5]">
                   {(labDisplay?.nowServing ?? []).slice(0, 4).map((ticket, idx) => (
                     <div
                       key={`lab-now-${idx}`}
@@ -592,7 +592,7 @@ export default function QueueDisplay() {
                   </svg>
                   Queuing
                 </div>
-                <div className="min-h-0 flex-1 overflow-hidden px-5 py-4">
+                <div className="min-h-0 flex-1 overflow-hidden bg-[#f8fbf5] px-5 py-4">
                   {(() => {
                     const queueTickets = (labDisplay?.queue ?? []).slice(0, 7);
                     const splitAt = Math.min(6, Math.ceil(queueTickets.length / 2));
@@ -648,7 +648,7 @@ export default function QueueDisplay() {
                   </svg>
                   Missed
                 </div>
-                <div className="min-h-0 flex-1 overflow-hidden px-5 py-4">
+                <div className="min-h-0 flex-1 overflow-hidden bg-[#f8fbf5] px-5 py-4">
                   {(() => {
                     const missedTickets = (labDisplay?.missed ?? []).slice(0, 7);
                     const splitAt = Math.min(6, Math.ceil(missedTickets.length / 2));
