@@ -568,10 +568,10 @@ export default function QueueDisplay() {
                       key={`lab-now-${idx}`}
                       className="flex items-center justify-between gap-4 px-5 py-3 text-[20px] font-semibold shadow-[inset_0_-1px_0_rgba(0,0,0,0.14)]"
                     >
-                      <div className="rounded-full bg-white/85 px-3 py-1 text-[25px] font-bold tabular-nums text-[#2f2b23] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.05)]">{`Room${idx + 1}`}</div>
+                      <div className="rounded-full bg-[#00B18B] px-3 py-1 text-[25px] font-bold tabular-nums text-white shadow-[inset_0_0_0_1px_rgba(255,255,255,0.12),0_4px_10px_rgba(0,177,139,0.18)]">{`Room${idx + 1}`}</div>
                       <div
                         className={[
-                          ticket.trim() ? "text-[#b78a1d]" : "text-[#2f2b23]",
+                          ticket.trim() ? "text-[#0f8b6d]" : "text-[#2f2b23]",
                           "text-[25px] font-bold tabular-nums",
                         ].join(" ")}
                       >
@@ -623,7 +623,7 @@ export default function QueueDisplay() {
                     xmlnsXlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 437.699 437.699"
                     xmlSpace="preserve"
-                    className="h-5 w-5 shrink-0"
+                    className="h-7 w-7 shrink-0"
                   >
                     <g>
                       <path
@@ -642,7 +642,7 @@ export default function QueueDisplay() {
                   </svg>
                   <div className="text-left leading-tight">
                     <div className="text-[18px] font-semibold">以下號碼請聯絡病理部職員</div>
-                    <div className="text-[15px] font-medium">For the following numbers, please approach our pathology staff</div>
+                    <div className="text-[17px] font-semibold">For the following numbers, please approach our pathology staff</div>
                   </div>
                 </div>
                 <div className="min-h-0 flex-1 overflow-hidden bg-[#f8fbf5] px-5 py-3">
