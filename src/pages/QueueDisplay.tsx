@@ -438,9 +438,9 @@ export default function QueueDisplay() {
                       : "ml-5 cursor-pointer text-2xl font-bold"
                   }
                 >
-                  {displayStationZh}
+                  {station === "lab" ? "病理部" : displayStationZh}
                   <br />
-                  {displayStationEn}
+                  {station === "lab" ? "Pathology" : displayStationEn}
                 </div>
               )}
             </button>
@@ -584,13 +584,15 @@ export default function QueueDisplay() {
 
                 <div className="flex h-[388px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
                 <div className="flex h-11 items-center justify-center gap-2 bg-[#dff3e9] text-xl font-semibold tracking-wide">
-                  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#3d2714" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="6" cy="7" r="1.5" />
-                    <circle cx="6" cy="12" r="1.5" />
-                    <circle cx="6" cy="17" r="1.5" />
-                    <path d="M10 7h8" />
-                    <path d="M10 12h8" />
-                    <path d="M10 17h8" />
+                  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#3d2714" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="6" cy="6" r="1.6" />
+                    <path d="M4.8 10.2c0-1 0.8-1.8 1.8-1.8h0.1c1 0 1.8 0.8 1.8 1.8v2.3H4.8z" />
+                    <circle cx="12" cy="9" r="1.6" />
+                    <path d="M10.8 13.2c0-1 0.8-1.8 1.8-1.8h0.1c1 0 1.8 0.8 1.8 1.8v2.3h-3.7z" />
+                    <circle cx="18" cy="12" r="1.6" />
+                    <path d="M16.8 16.2c0-1 0.8-1.8 1.8-1.8h0.1c1 0 1.8 0.8 1.8 1.8v2.3h-3.7z" />
+                    <path d="M8.8 11h1.8" />
+                    <path d="M14.8 14h1.8" />
                   </svg>
                   Queuing
                 </div>
