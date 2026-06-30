@@ -397,7 +397,7 @@ function LabCallMockUI({ asset, onHome, onToggleFullscreen }: LabCallMockUIProps
         </div>
 
         <div
-          className="mx-auto w-[min(100vw,100vh)] max-w-[53rem] px-2 py-4"
+          className="mx-auto w-[min(92vw,92vh)] max-w-3xl px-2 py-4"
           style={{ transform: "scale(0.9)", transformOrigin: "top center" }}
         >
           <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_18px_38px_rgba(0,0,0,0.10)]">
