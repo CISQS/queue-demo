@@ -548,7 +548,7 @@ export default function QueueDisplay() {
         ) : station === "lab" ? (
           <div className="w-full flex-1 px-8 py-6">
             <div className="flex w-full items-start gap-3">
-              <div className="flex h-[292px] w-[34%] min-w-0 shrink-0 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
+              <div className="flex h-[388px] w-[34%] min-w-0 shrink-0 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
                 <div className="flex h-11 items-center justify-center bg-white/60 text-xl font-semibold tracking-wide">
                   Now Serving
                 </div>
@@ -565,12 +565,12 @@ export default function QueueDisplay() {
                 </div>
               </div>
 
-              <div className="flex h-[292px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
+              <div className="flex h-[388px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
                 <div className="flex h-11 items-center justify-center bg-white/60 text-xl font-semibold tracking-wide">
                   Queuing
                 </div>
                 <div className="min-h-0 flex-1 overflow-hidden px-5 py-4">
-                  <div className="mx-auto flex h-full max-h-[204px] w-fit flex-col flex-wrap content-start gap-x-12 gap-y-3 text-[25px] font-bold tabular-nums text-[#2f2b23]">
+                  <div className="mx-auto flex h-full max-h-[312px] w-fit flex-col flex-wrap content-start gap-x-12 gap-y-3 text-[25px] font-bold tabular-nums text-[#2f2b23]">
                     {(labDisplay?.queue ?? []).slice(0, 7).map((t) => (
                       <div key={`lab-queue-${t}`} className="min-h-[34px] leading-none whitespace-nowrap">
                         {t}
@@ -580,12 +580,12 @@ export default function QueueDisplay() {
                 </div>
               </div>
 
-              <div className="flex h-[292px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
+              <div className="flex h-[388px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
                 <div className="flex h-11 items-center justify-center bg-white/60 text-xl font-semibold tracking-wide">
                   Missed
                 </div>
                 <div className="min-h-0 flex-1 overflow-hidden px-5 py-4">
-                  <div className="mx-auto flex h-full max-h-[204px] w-fit flex-col flex-wrap content-start gap-x-12 gap-y-3 text-[25px] font-bold tabular-nums text-[#2f2b23]">
+                  <div className="mx-auto flex h-full max-h-[312px] w-fit flex-col flex-wrap content-start gap-x-12 gap-y-3 text-[25px] font-bold tabular-nums text-[#2f2b23]">
                     {(labDisplay?.missed ?? []).slice(0, 7).map((ticket) => (
                       <div key={`lab-missed-${ticket}`} className="min-h-[34px] leading-none whitespace-nowrap">
                         {ticket}
