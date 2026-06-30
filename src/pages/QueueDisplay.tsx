@@ -642,7 +642,7 @@ export default function QueueDisplay() {
                   </svg>
                   <div className="text-left leading-tight">
                     <div className="text-[18px] font-semibold">以下號碼請聯絡病理部職員</div>
-                    <div className="text-[13px] font-medium">For the following numbers, please approach our pathology staff</div>
+                    <div className="text-[15px] font-medium">For the following numbers, please approach our pathology staff</div>
                   </div>
                 </div>
                 <div className="min-h-0 flex-1 overflow-hidden bg-[#f8fbf5] px-5 py-3">
