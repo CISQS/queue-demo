@@ -188,6 +188,8 @@ export default function QueueDisplay() {
   const columnLabelZh = station === "dr" ? "醫生" : "櫃位";
   const columnLabelEn = station === "dr" ? "Doctor" : "Counter";
   const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`;
+  const headerActionButtonClass =
+    "inline-flex h-10 items-center justify-center rounded-lg border border-black/15 bg-white px-4 text-sm font-semibold text-black/70 shadow-sm transition hover:bg-black/[0.03] hover:text-black focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25";
 
   const handleToggleMockNoticeTickets = () => {
     if (showFixedNoticeTickets) {
@@ -206,30 +208,50 @@ export default function QueueDisplay() {
         <div className="flex min-h-screen w-full flex-col bg-gradient-to-b from-[#f1e8c4] to-[#dff0cc] text-black">
           <div className="bg-[#008d63]">
             <div className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white">
-              <button type="button" onClick={() => navigate("/")} className="m-2 flex items-center pl-5 text-left">
+              <div className="m-2 flex items-center gap-3 pl-5 text-left">
+                <button
+                  type="button"
+                  onClick={toggleFullscreen}
+                  className={headerActionButtonClass}
+                  style={{
+                    touchAction: "manipulation",
+                    WebkitTapHighlightColor: "transparent",
+                  }}
+                  aria-label={isFullscreen ? "退出全屏" : "Full Screen"}
+                  title={isFullscreen ? "退出全屏" : "Full Screen"}
+                >
+                  Full Screen
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate("/")}
+                  className={headerActionButtonClass}
+                  style={{
+                    touchAction: "manipulation",
+                    WebkitTapHighlightColor: "transparent",
+                  }}
+                >
+                  Home
+                </button>
                 <img
                   src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
-                  className="h-16 cursor-pointer"
+                  className="h-16"
                   onError={(e) => {
                     e.currentTarget.style.display = "none";
                   }}
                 />
-                <div className="ml-5 cursor-pointer text-2xl font-bold">
+                <div className="ml-5 text-2xl font-bold">
                   {displayStationZh}
                   <br />
                   {displayStationEn}
                 </div>
-              </button>
-              <button
-                type="button"
-                onClick={toggleFullscreen}
+              </div>
+              <div
                 className="m-2 flex items-center text-sm"
                 style={{
                   touchAction: "manipulation",
                   WebkitTapHighlightColor: "transparent",
                 }}
-                aria-label={isFullscreen ? "退出全屏" : "進入全屏"}
-                title={isFullscreen ? "退出全屏" : "進入全屏"}
               >
                 <div className="text-center text-xs">
                   <p className="text-base uppercase leading-none">
@@ -252,7 +274,7 @@ export default function QueueDisplay() {
                     }}
                   />
                 </div>
-              </button>
+              </div>
             </div>
           </div>
 
@@ -286,74 +308,94 @@ export default function QueueDisplay() {
     <div className="min-h-screen w-full ui-sans-serif">
       <div className="flex min-h-screen w-full select-none flex-col bg-gradient-to-r from-[#eedcac] to-[#bce4be] text-black">
         <div className="bg-[#008d63]">
-              <div className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white">
-                <button type="button" onClick={() => navigate("/")} className="m-2 flex items-center pl-5 text-left">
-                  <img
-                    src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
-                    className="h-16 cursor-pointer"
-                    onError={(e) => {
-                      e.currentTarget.style.display = "none";
-                    }}
-                  />
-                  {station === "dr" ? (
-                    <div className="ml-5 cursor-pointer text-2xl font-bold">
-                      {displayStationZh} {displayStationEn}
-                    </div>
-                  ) : (
-                    <div className="ml-5 cursor-pointer text-2xl font-bold">
-                      {displayStationZh}
-                      <br />
-                      {displayStationEn}
-                    </div>
-                  )}
-                </button>
-                <button
-                  type="button"
-                  onClick={toggleFullscreen}
-                  className="m-2 flex items-center text-sm"
-                  style={{
-                    touchAction: "manipulation",
-                    WebkitTapHighlightColor: "transparent",
+          <div className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white">
+            <div className="m-2 flex items-center gap-3 pl-5 text-left">
+              <button
+                type="button"
+                onClick={toggleFullscreen}
+                className={headerActionButtonClass}
+                style={{
+                  touchAction: "manipulation",
+                  WebkitTapHighlightColor: "transparent",
+                }}
+                aria-label={isFullscreen ? "退出全屏" : "Full Screen"}
+                title={isFullscreen ? "退出全屏" : "Full Screen"}
+              >
+                Full Screen
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/")}
+                className={headerActionButtonClass}
+                style={{
+                  touchAction: "manipulation",
+                  WebkitTapHighlightColor: "transparent",
+                }}
+              >
+                Home
+              </button>
+              <img
+                src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
+                className="h-16"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+              {station === "dr" ? (
+                <div className="ml-5 text-2xl font-bold">
+                  {displayStationZh} {displayStationEn}
+                </div>
+              ) : (
+                <div className="ml-5 text-2xl font-bold">
+                  {displayStationZh}
+                  <br />
+                  {displayStationEn}
+                </div>
+              )}
+            </div>
+            <div
+              className="m-2 flex items-center text-sm"
+              style={{
+                touchAction: "manipulation",
+                WebkitTapHighlightColor: "transparent",
+              }}
+            >
+              <div className="text-center text-xs">
+                <p className="text-base uppercase leading-none">
+                  <br />
+                  養和醫院
+                  <br />
+                  Hong Kong
+                  <br />
+                  Sanatorium &amp; Hospital <br />
+                  <br />
+                  <span className="font-semibold">{formatDateTimeDDMMYYYYHHmmss(now)}</span>
+                </p>
+              </div>
+              <div className="opacity-40">
+                <img
+                  src={asset("qdisplay/assets/logo-hksh-emc-sh-B1ezILO2.png")}
+                  className="min-h-20"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
                   }}
-                  aria-label={isFullscreen ? "退出全屏" : "進入全屏"}
-                  title={isFullscreen ? "退出全屏" : "進入全屏"}
-                >
-                  <div className="text-center text-xs">
-                    <p className="text-base uppercase leading-none">
-                      <br />
-                      養和醫院
-                      <br />
-                      Hong Kong
-                      <br />
-                      Sanatorium &amp; Hospital <br />
-                      <br />
-                      <span className="font-semibold">{formatDateTimeDDMMYYYYHHmmss(now)}</span>
-                    </p>
-                  </div>
-                  <div className="opacity-40">
-                    <img
-                      src={asset("qdisplay/assets/logo-hksh-emc-sh-B1ezILO2.png")}
-                      className="min-h-20"
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                      }}
-                    />
-                  </div>
-                </button>
+                />
               </div>
             </div>
+          </div>
+        </div>
 
-            {station === "dr" ? (
-              <div className="w-full px-10 pt-4 pb-2">
-                <table className="w-full border-separate border-spacing-y-4 text-black">
-                  <thead>
-                    <tr className="text-4xl">
-                      <th className="pb-2 text-left font-normal">號碼 Number</th>
-                      <th className="pb-2 text-left font-normal">
-                        {columnLabelZh} {columnLabelEn}
-                      </th>
-                    </tr>
-                  </thead>
+        {station === "dr" ? (
+          <div className="w-full px-10 pt-4 pb-2">
+            <table className="w-full border-separate border-spacing-y-4 text-black">
+              <thead>
+                <tr className="text-4xl">
+                  <th className="pb-2 text-left font-normal">號碼 Number</th>
+                  <th className="pb-2 text-left font-normal">
+                    {columnLabelZh} {columnLabelEn}
+                  </th>
+                </tr>
+              </thead>
                   <tbody>
                     {rows.map((row, index) => (
                       <tr key={`counter-row-${row.counter}`}>
