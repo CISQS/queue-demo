@@ -458,51 +458,52 @@ export default function QueueDisplay() {
                 </div>
               ))}
             </div>
-            ) : (
-              <div className="h-[380px] w-full">
-                <div className="box-border flex justify-between px-10 py-2 text-4xl">
-                  <div>號碼 Number</div>
-                  <div>
-                    {columnLabelZh} {columnLabelEn}
-                  </div>
-                </div>
-
-                {rows.map((row) => (
-                  <div key={`counter-row-${row.counter}`} className="flex justify-between px-10 py-2">
-                    <div>
-                      <button
-                        type="button"
-                        disabled={!row.ticket}
-                        onClick={() => moveCounterTicketToPassed(station, Number(row.counter))}
-                        className="flex h-16 w-80 items-center justify-center bg-[#edeedd] font-sans text-4xl font-semibold tabular-nums"
-                        style={{
-                          touchAction: "manipulation",
-                          WebkitTapHighlightColor: "transparent",
-                        }}
-                      >
-                        {row.ticket}
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        type="button"
-                        onClick={() => cycleCounterTicket(station, Number(row.counter))}
-                        className="flex h-16 w-56 items-center justify-center bg-[#edeedd] font-sans text-4xl font-semibold tabular-nums"
-                        style={{
-                          touchAction: "manipulation",
-                          WebkitTapHighlightColor: "transparent",
-                        }}
-                      >
-                        {row.ticket ? row.counter : ""}
-                      </button>
-                    </div>
-                  </div>
-                ))}
+          </div>
+        ) : (
+          <div className="h-[380px] w-full">
+            <div className="box-border flex justify-between px-10 py-2 text-4xl">
+              <div>號碼 Number</div>
+              <div>
+                {columnLabelZh} {columnLabelEn}
               </div>
-            )}
+            </div>
 
-            {station !== "dr" && (
-            <div className="my-2 flex h-[100px] items-center justify-between bg-white font-sans">
+            {rows.map((row) => (
+              <div key={`counter-row-${row.counter}`} className="flex justify-between px-10 py-2">
+                <div>
+                  <button
+                    type="button"
+                    disabled={!row.ticket}
+                    onClick={() => moveCounterTicketToPassed(station, Number(row.counter))}
+                    className="flex h-16 w-80 items-center justify-center bg-[#edeedd] font-sans text-4xl font-semibold tabular-nums"
+                    style={{
+                      touchAction: "manipulation",
+                      WebkitTapHighlightColor: "transparent",
+                    }}
+                  >
+                    {row.ticket}
+                  </button>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => cycleCounterTicket(station, Number(row.counter))}
+                    className="flex h-16 w-56 items-center justify-center bg-[#edeedd] font-sans text-4xl font-semibold tabular-nums"
+                    style={{
+                      touchAction: "manipulation",
+                      WebkitTapHighlightColor: "transparent",
+                    }}
+                  >
+                    {row.ticket ? row.counter : ""}
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {station !== "dr" && (
+          <div className="my-2 flex h-[100px] items-center justify-between bg-white font-sans">
               <div className="flex w-2/3 items-center justify-start">
                 <div>
                   <svg
@@ -563,7 +564,7 @@ export default function QueueDisplay() {
                 </div>
               </div>
             </div>
-            )}
+        )}
 
             {station !== "dr" && (
               <>
