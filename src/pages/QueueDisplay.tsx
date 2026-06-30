@@ -562,7 +562,7 @@ export default function QueueDisplay() {
                   </svg>
                   Now Serving
                 </div>
-                <div className="flex min-h-0 flex-1 flex-col bg-[#f3fbf8]">
+                <div className="flex min-h-0 flex-1 flex-col bg-[#f8fbf5]">
                   {(labDisplay?.nowServing ?? []).slice(0, 4).map((ticket, idx) => (
                     <div
                       key={`lab-now-${idx}`}
@@ -595,10 +595,7 @@ export default function QueueDisplay() {
                       <div className="grid h-full max-h-[312px] grid-cols-2 items-start gap-x-12 text-[25px] font-bold tabular-nums text-[#2f2b23]">
                         <div className="flex flex-col gap-y-3">
                           {leftColumn.map((t) => (
-                            <div
-                              key={`lab-queue-${t}`}
-                              className="inline-flex min-h-[44px] items-center rounded-xl bg-white px-4 py-2 leading-none whitespace-nowrap text-[#355646] shadow-[0_8px_18px_rgba(0,0,0,0.05)] ring-1 ring-[#c8d7c4]"
-                            >
+                            <div key={`lab-queue-${t}`} className="min-h-[34px] leading-none whitespace-nowrap">
                               {t}
                             </div>
                           ))}
