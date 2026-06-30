@@ -572,13 +572,13 @@ export default function QueueDisplay() {
                   </div>
                   {isLabDraftV2 ? (
                     <div className="flex min-h-0 flex-1 flex-col bg-[#f8fbf5]">
-                      <div className="flex items-center justify-between px-5 py-2 text-[13px] font-semibold tracking-wide text-black/55">
+                      <div className="mx-auto flex w-full max-w-[280px] items-center justify-between px-2 py-2 text-[13px] font-semibold tracking-wide text-black/55">
                         <div>房號 Room</div>
                         <div>票號 Ticket No.</div>
                       </div>
-                      <div className="flex min-h-0 flex-1 flex-col gap-y-2 px-5 py-2">
+                      <div className="flex min-h-0 flex-1 flex-col gap-y-1 px-5 py-2">
                         {(labDisplay?.nowServing ?? []).slice(0, 4).map((ticket, idx) => (
-                          <div key={`lab-now-${idx}`} className="flex items-center justify-between gap-2 py-2 text-[20px] font-semibold">
+                          <div key={`lab-now-${idx}`} className="mx-auto flex w-full max-w-[280px] items-center justify-between gap-1 py-1 text-[20px] font-semibold">
                             <div className="text-[25px] font-bold tabular-nums text-[#18a37f]">{`Room ${idx + 1}`}</div>
                             <div
                               className={[
@@ -594,13 +594,13 @@ export default function QueueDisplay() {
                     </div>
                   ) : (
                     <div className="flex min-h-0 flex-1 flex-col bg-[#f8fbf5]">
-                      <div className="flex items-center justify-between px-5 py-2 text-[13px] font-semibold tracking-wide text-black/55">
+                      <div className="mx-auto flex w-full max-w-[280px] items-center justify-between px-2 py-2 text-[13px] font-semibold tracking-wide text-black/55">
                         <div>房號 Room</div>
                         <div>票號 Ticket No.</div>
                       </div>
-                      <div className="flex min-h-0 flex-1 flex-col gap-y-2 px-5 py-2">
+                      <div className="flex min-h-0 flex-1 flex-col gap-y-1 px-5 py-2">
                         {(labDisplay?.nowServing ?? []).slice(0, 4).map((ticket, idx) => (
-                          <div key={`lab-now-${idx}`} className="flex items-center justify-between gap-2 py-2 text-[20px] font-semibold">
+                          <div key={`lab-now-${idx}`} className="mx-auto flex w-full max-w-[280px] items-center justify-between gap-1 py-1 text-[20px] font-semibold">
                             <div className="text-[25px] font-bold tabular-nums text-[#18a37f]">{`Room ${idx + 1}`}</div>
                             <div
                               className={[
