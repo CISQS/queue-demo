@@ -268,7 +268,7 @@ export default function QueueDisplay() {
                 setNurseMockTicket(nextMockTicket(base));
               }}
               aria-label="點擊循環顯示測試票號"
-              className="flex w-full items-center justify-center font-sans text-[120px] font-semibold tabular-nums"
+              className="flex w-full items-center justify-center font-sans text-[180px] font-semibold tabular-nums"
               style={{
                 touchAction: "manipulation",
                 WebkitTapHighlightColor: "transparent",
