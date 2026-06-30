@@ -430,13 +430,13 @@
       width: 100%;
       table-layout: fixed;
       border-collapse: separate;
-      border-spacing: 0 16px;
+      border-spacing: 0 20px;
     }
 
     .doctor-table th {
-      padding-bottom: 8px;
+      padding-bottom: 16px;
       text-align: left;
-      font-size: 40px;
+      font-size: 32px;
       font-weight: 400;
     }
 
@@ -506,7 +506,8 @@
     }
 
     .doctor-room {
-      width: 102px;
+      width: 96px;
+      height: 80px;
       margin: 8px;
       border-radius: 14px;
       background: linear-gradient(180deg, #0f8b6d 0%, #15735e 100%);
@@ -516,7 +517,7 @@
       align-items: center;
       justify-content: center;
       gap: 1px;
-      padding: 8px 8px 9px;
+      padding: 8px;
       position: relative;
       overflow: hidden;
       box-shadow:
@@ -530,7 +531,7 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 28px;
+      height: 24px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
     }
 
@@ -538,7 +539,7 @@
       position: relative;
       z-index: 1;
       line-height: 1;
-      font-size: 39px;
+      font-size: clamp(30px, 3.8vw, 44px);
       font-weight: 900;
       letter-spacing: 0.04em;
       text-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
@@ -547,7 +548,7 @@
     .doctor-room-caption {
       position: relative;
       z-index: 1;
-      font-size: 9px;
+      font-size: clamp(8px, 1vw, 10px);
       font-weight: 700;
       letter-spacing: 0.12em;
       text-transform: uppercase;
