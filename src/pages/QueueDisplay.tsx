@@ -562,11 +562,11 @@ export default function QueueDisplay() {
                   </svg>
                   Now Serving
                 </div>
-                <div className="flex min-h-0 flex-1 flex-col divide-y divide-black/10 bg-[#f8fbf5]">
+                <div className="flex min-h-0 flex-1 flex-col bg-[#f8fbf5]">
                   {(labDisplay?.nowServing ?? []).slice(0, 4).map((ticket, idx) => (
                     <div
                       key={`lab-now-${idx}`}
-                      className="flex items-center justify-between gap-4 border-b border-black/10 px-5 py-3 text-[20px] font-semibold"
+                      className="flex items-center justify-between gap-4 px-5 py-3 text-[20px] font-semibold shadow-[inset_0_-1px_0_rgba(0,0,0,0.14)]"
                     >
                       <div className="text-[25px] font-bold tabular-nums text-[#2f2b23]">{`Room${idx + 1}`}</div>
                       <div
