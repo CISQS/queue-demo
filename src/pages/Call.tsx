@@ -84,6 +84,9 @@ export default function Call() {
               e.currentTarget.style.display = "none";
             }}
           />
+          <div className="text-sm font-semibold">Queue System</div>
+        </div>
+        <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={toggleFullscreen}
@@ -94,32 +97,15 @@ export default function Call() {
           >
             Full Screen
           </button>
-          <button type="button" onClick={() => navigate("/")} className="text-sm font-semibold text-black/70 hover:text-black">
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="inline-flex h-9 items-center justify-center rounded-lg border border-black/15 bg-white px-3 text-xs font-semibold text-black/70 shadow-sm transition hover:bg-black/[0.03] hover:text-black focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
+            style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+          >
             Home
           </button>
         </div>
-        <div className="text-sm font-semibold">Queue System</div>
-        {isNurseStation ? (
-          <div className="w-[140px]" />
-        ) : (
-          <div className="flex items-center gap-2">
-            <div className="text-xs font-semibold text-black/60">Counter</div>
-            <div className="relative">
-              <select
-                value={counter}
-                onChange={(e) => setCounter(Number(e.target.value))}
-                className="h-9 w-[84px] appearance-none rounded-lg border border-black/15 bg-white pl-3 pr-8 text-sm font-semibold text-black outline-none focus:ring-2 focus:ring-[#2aa9b8]/30"
-              >
-                {[1, 2, 3, 4].map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-black/60">▾</div>
-            </div>
-          </div>
-        )}
       </div>
 
       <div className="mx-auto max-w-2xl px-6 py-8">
@@ -151,6 +137,26 @@ export default function Call() {
                   variant="light"
                 />
               </div>
+
+              {!isNurseStation && (
+                <div>
+                  <div className="text-xs font-semibold text-black/60">Counter</div>
+                  <div className="relative mt-2">
+                    <select
+                      value={counter}
+                      onChange={(e) => setCounter(Number(e.target.value))}
+                      className="h-11 w-full appearance-none rounded-lg border border-black/15 bg-white pl-4 pr-10 text-sm font-semibold text-black outline-none focus:ring-2 focus:ring-[#2aa9b8]/30"
+                    >
+                      {[1, 2, 3, 4].map((c) => (
+                        <option key={c} value={c}>
+                          {c}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-black/60">▾</div>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <div className="text-xs font-semibold text-black/60">Ticket No.</div>

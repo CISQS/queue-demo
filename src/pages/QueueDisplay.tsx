@@ -209,30 +209,6 @@ export default function QueueDisplay() {
           <div className="bg-[#008d63]">
             <div className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white">
               <div className="m-2 flex items-center gap-3 pl-5 text-left">
-                <button
-                  type="button"
-                  onClick={toggleFullscreen}
-                  className={headerActionButtonClass}
-                  style={{
-                    touchAction: "manipulation",
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                  aria-label={isFullscreen ? "退出全屏" : "Full Screen"}
-                  title={isFullscreen ? "退出全屏" : "Full Screen"}
-                >
-                  Full Screen
-                </button>
-                <button
-                  type="button"
-                  onClick={() => navigate("/")}
-                  className={headerActionButtonClass}
-                  style={{
-                    touchAction: "manipulation",
-                    WebkitTapHighlightColor: "transparent",
-                  }}
-                >
-                  Home
-                </button>
                 <img
                   src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
                   className="h-16"
@@ -247,12 +223,28 @@ export default function QueueDisplay() {
                 </div>
               </div>
               <div
-                className="m-2 flex items-center text-sm"
+                className="m-2 flex items-center gap-3 text-sm"
                 style={{
                   touchAction: "manipulation",
                   WebkitTapHighlightColor: "transparent",
                 }}
               >
+                <button
+                  type="button"
+                  onClick={toggleFullscreen}
+                  className={headerActionButtonClass}
+                  aria-label={isFullscreen ? "退出全屏" : "Full Screen"}
+                  title={isFullscreen ? "退出全屏" : "Full Screen"}
+                >
+                  Full Screen
+                </button>
+                <button
+                  type="button"
+                  onClick={() => navigate("/")}
+                  className={headerActionButtonClass}
+                >
+                  Home
+                </button>
                 <div className="text-center text-xs">
                   <p className="text-base uppercase leading-none">
                     <br />
@@ -310,30 +302,6 @@ export default function QueueDisplay() {
         <div className="bg-[#008d63]">
           <div className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white">
             <div className="m-2 flex items-center gap-3 pl-5 text-left">
-              <button
-                type="button"
-                onClick={toggleFullscreen}
-                className={headerActionButtonClass}
-                style={{
-                  touchAction: "manipulation",
-                  WebkitTapHighlightColor: "transparent",
-                }}
-                aria-label={isFullscreen ? "退出全屏" : "Full Screen"}
-                title={isFullscreen ? "退出全屏" : "Full Screen"}
-              >
-                Full Screen
-              </button>
-              <button
-                type="button"
-                onClick={() => navigate("/")}
-                className={headerActionButtonClass}
-                style={{
-                  touchAction: "manipulation",
-                  WebkitTapHighlightColor: "transparent",
-                }}
-              >
-                Home
-              </button>
               <img
                 src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
                 className="h-16"
@@ -354,12 +322,28 @@ export default function QueueDisplay() {
               )}
             </div>
             <div
-              className="m-2 flex items-center text-sm"
+              className="m-2 flex items-center gap-3 text-sm"
               style={{
                 touchAction: "manipulation",
                 WebkitTapHighlightColor: "transparent",
               }}
             >
+              <button
+                type="button"
+                onClick={toggleFullscreen}
+                className={headerActionButtonClass}
+                aria-label={isFullscreen ? "退出全屏" : "Full Screen"}
+                title={isFullscreen ? "退出全屏" : "Full Screen"}
+              >
+                Full Screen
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate("/")}
+                className={headerActionButtonClass}
+              >
+                Home
+              </button>
               <div className="text-center text-xs">
                 <p className="text-base uppercase leading-none">
                   <br />
