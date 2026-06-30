@@ -554,7 +554,7 @@ export default function QueueDisplay() {
         ) : station === "lab" ? (
           <div className="w-full flex-1 px-4 py-5">
             <div className="flex flex-col gap-2">
-              <div className="flex w-full items-start gap-2">
+              <div className={isLabDraftV2 ? "flex w-full items-start gap-0" : "flex w-full items-start gap-2"}>
                 <div
                   className={[
                     isLabDraftV2
@@ -618,7 +618,7 @@ export default function QueueDisplay() {
                 </div>
 
                 {isLabDraftV2 ? (
-                  <div className="flex min-w-0 flex-[2] gap-2">
+                  <div className="flex min-w-0 flex-[2] gap-0">
                     <div className="flex h-[388px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#f8fbf5] text-black shadow-[0_16px_30px_rgba(111,140,114,0.05)] ring-1 ring-[#9caf93]/10">
                       <div className="flex h-11 items-center justify-center bg-[#00B18B] text-xl font-semibold tracking-wide text-white">
                         等待中 Queuing
