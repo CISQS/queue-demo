@@ -572,19 +572,24 @@ export default function QueueDisplay() {
                 <div className="min-h-0 flex-1 overflow-hidden px-5 py-4">
                   {(() => {
                     const queueTickets = (labDisplay?.queue ?? []).slice(0, 7);
-                    const multiColumn = queueTickets.length > 6;
+                    const leftColumn = queueTickets.slice(0, 6);
+                    const rightColumn = queueTickets.slice(6, 12);
                     return (
-                      <div
-                        className={[
-                          multiColumn ? "mx-auto w-fit" : "w-full",
-                          "flex h-full max-h-[312px] flex-col flex-wrap content-start gap-x-12 gap-y-3 text-[25px] font-bold tabular-nums text-[#2f2b23]",
-                        ].join(" ")}
-                      >
-                        {queueTickets.map((t) => (
-                      <div key={`lab-queue-${t}`} className="min-h-[34px] leading-none whitespace-nowrap">
-                        {t}
-                      </div>
-                        ))}
+                      <div className="grid h-full max-h-[312px] grid-cols-2 items-start gap-x-12 text-[25px] font-bold tabular-nums text-[#2f2b23]">
+                        <div className="flex flex-col gap-y-3">
+                          {leftColumn.map((t) => (
+                            <div key={`lab-queue-${t}`} className="min-h-[34px] leading-none whitespace-nowrap">
+                              {t}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex flex-col gap-y-3">
+                          {rightColumn.map((t) => (
+                            <div key={`lab-queue-${t}`} className="min-h-[34px] leading-none whitespace-nowrap">
+                              {t}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     );
                   })()}
@@ -598,19 +603,24 @@ export default function QueueDisplay() {
                 <div className="min-h-0 flex-1 overflow-hidden px-5 py-4">
                   {(() => {
                     const missedTickets = (labDisplay?.missed ?? []).slice(0, 7);
-                    const multiColumn = missedTickets.length > 6;
+                    const leftColumn = missedTickets.slice(0, 6);
+                    const rightColumn = missedTickets.slice(6, 12);
                     return (
-                      <div
-                        className={[
-                          multiColumn ? "mx-auto w-fit" : "w-full",
-                          "flex h-full max-h-[312px] flex-col flex-wrap content-start gap-x-12 gap-y-3 text-[25px] font-bold tabular-nums text-[#2f2b23]",
-                        ].join(" ")}
-                      >
-                        {missedTickets.map((ticket) => (
-                      <div key={`lab-missed-${ticket}`} className="min-h-[34px] leading-none whitespace-nowrap">
-                        {ticket}
-                      </div>
-                        ))}
+                      <div className="grid h-full max-h-[312px] grid-cols-2 items-start gap-x-12 text-[25px] font-bold tabular-nums text-[#2f2b23]">
+                        <div className="flex flex-col gap-y-3">
+                          {leftColumn.map((ticket) => (
+                            <div key={`lab-missed-${ticket}`} className="min-h-[34px] leading-none whitespace-nowrap">
+                              {ticket}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex flex-col gap-y-3">
+                          {rightColumn.map((ticket) => (
+                            <div key={`lab-missed-${ticket}`} className="min-h-[34px] leading-none whitespace-nowrap">
+                              {ticket}
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     );
                   })()}
