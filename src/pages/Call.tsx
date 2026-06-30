@@ -429,7 +429,7 @@ function LabCallMockUI({ asset, onHome, onToggleFullscreen }: LabCallMockUIProps
                 </button>
               </div>
 
-              <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_220px]">
+              <div className="mt-6 grid gap-4">
                 <div className="rounded-2xl border border-black/10 bg-white p-5">
                   {mode === "num" ? (
                     <div className="grid grid-cols-3 gap-3">
@@ -532,7 +532,7 @@ function LabCallMockUI({ asset, onHome, onToggleFullscreen }: LabCallMockUIProps
                     className="inline-flex h-20 flex-[7] items-center justify-center rounded-2xl bg-[#00B18B] px-4 text-[22px] font-semibold text-white shadow-[0_10px_22px_rgba(0,177,139,0.22)] transition hover:bg-[#009a78] active:translate-y-[1px] active:scale-[0.99]"
                     style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                   >
-                    完成 OK
+                    確認 Confirm
                   </button>
                 </div>
               </div>
