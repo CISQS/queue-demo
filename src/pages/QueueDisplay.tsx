@@ -567,7 +567,7 @@ export default function QueueDisplay() {
                       key={`lab-now-${idx}`}
                       className="flex items-center justify-between gap-4 px-5 py-3 text-[20px] font-semibold"
                     >
-                      <div className="opacity-90">{`Room${idx + 1}`}</div>
+                      <div className="text-[25px] font-bold tabular-nums text-[#2f2b23]">{`Room${idx + 1}`}</div>
                       <div
                         className={[
                           ticket.trim() ? "text-[#0f8b6d]" : "text-[#2f2b23]",
@@ -652,24 +652,13 @@ export default function QueueDisplay() {
                 <div className="min-h-0 flex-1 overflow-hidden bg-[#f8fbf5] px-5 py-4">
                   {(() => {
                     const missedTickets = (labDisplay?.missed ?? []).slice(0, 4);
-                    const leftColumn = missedTickets;
-                    const rightColumn: string[] = [];
                     return (
-                      <div className="grid h-full max-h-[312px] grid-cols-2 items-start gap-x-12 text-[25px] font-bold tabular-nums text-[#2f2b23]">
-                        <div className="flex flex-col gap-y-3">
-                          {leftColumn.map((ticket) => (
-                            <div key={`lab-missed-${ticket}`} className="min-h-[34px] leading-none whitespace-nowrap">
-                              {ticket}
-                            </div>
-                          ))}
-                        </div>
-                        <div className="flex flex-col gap-y-3">
-                          {rightColumn.map((ticket) => (
-                            <div key={`lab-missed-${ticket}`} className="min-h-[34px] leading-none whitespace-nowrap">
-                              {ticket}
-                            </div>
-                          ))}
-                        </div>
+                      <div className="flex h-full max-h-[312px] items-start gap-x-12 text-[25px] font-bold tabular-nums text-[#2f2b23]">
+                        {missedTickets.map((ticket) => (
+                          <div key={`lab-missed-${ticket}`} className="min-h-[34px] leading-none whitespace-nowrap">
+                            {ticket}
+                          </div>
+                        ))}
                       </div>
                     );
                   })()}
