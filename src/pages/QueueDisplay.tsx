@@ -360,10 +360,10 @@ export default function QueueDisplay() {
         </div>
 
         {station === "dr" ? (
-          <div className="w-full px-[clamp(16px,4vw,40px)] pt-[clamp(8px,2vh,16px)] pb-[clamp(6px,1.5vh,12px)]">
-            <table className="w-full border-separate border-spacing-y-[clamp(10px,1.8vh,18px)] text-black">
+          <div className="w-full px-10 pt-4 pb-2">
+            <table className="w-full border-separate border-spacing-y-4 text-black">
               <thead>
-                <tr className="text-[clamp(26px,3.2vw,44px)]">
+                <tr className="text-4xl">
                   <th className="pb-2 text-left font-normal">號碼 Number</th>
                   <th className="pb-2 text-left font-normal">
                     {columnLabelZh} {columnLabelEn}
@@ -373,7 +373,7 @@ export default function QueueDisplay() {
                   <tbody>
                     {rows.map((row, index) => (
                       <tr key={`counter-row-${row.counter}`}>
-                        <td className="pr-[clamp(12px,2vw,32px)] align-middle">
+                        <td className="pr-8 align-middle">
                           <button
                             type="button"
                             onClick={() => {
@@ -387,7 +387,7 @@ export default function QueueDisplay() {
                                 return next;
                               });
                             }}
-                            className="flex h-[clamp(88px,11vh,140px)] w-full min-w-0 items-center justify-center bg-[#edeedd] font-sans text-[clamp(44px,5vw,72px)] font-semibold tabular-nums"
+                            className="flex h-24 w-full min-w-[420px] items-center justify-center bg-[#edeedd] font-sans text-[42px] font-semibold tabular-nums"
                             style={{
                               touchAction: "manipulation",
                               WebkitTapHighlightColor: "transparent",
@@ -407,24 +407,24 @@ export default function QueueDisplay() {
                                 return next;
                               });
                             }}
-                            className="flex h-[clamp(88px,11vh,140px)] w-full min-w-0 items-center justify-stretch overflow-hidden rounded-[16px] bg-gradient-to-b from-[#f2f0e3] to-[#e6e2cf] px-0 text-center font-sans text-[clamp(34px,3.6vw,56px)] font-semibold leading-none shadow-[inset_0_0_0_1px_rgba(83,82,77,0.06),0_10px_20px_rgba(61,39,20,0.08)]"
+                            className="flex h-24 w-full min-w-[360px] items-center justify-stretch overflow-hidden rounded-[14px] bg-gradient-to-b from-[#f2f0e3] to-[#e6e2cf] px-0 text-center font-sans text-[35px] font-semibold leading-none shadow-[inset_0_0_0_1px_rgba(83,82,77,0.06),0_10px_20px_rgba(61,39,20,0.08)]"
                             style={{
                               touchAction: "manipulation",
                               WebkitTapHighlightColor: "transparent",
                             }}
                           >
-                            <div className="relative m-[clamp(8px,1vw,12px)] flex w-[clamp(96px,10vw,150px)] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[16px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 py-[clamp(10px,1.3vh,16px)] text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-7 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
+                            <div className="relative m-2 flex w-[102px] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[14px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 py-[9px] text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-7 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
                               <div
-                                className="relative z-[1] text-[clamp(40px,4.5vw,64px)] font-black leading-none tracking-[0.04em]"
+                                className="relative z-[1] text-[39px] font-black leading-none tracking-[0.04em]"
                                 style={{ textShadow: "0 2px 6px rgba(0, 0, 0, 0.18)" }}
                               >
                                 {DOCTOR_ROOMS[index] ?? ""}
                               </div>
-                              <div className="relative z-[1] text-[clamp(10px,1.1vw,14px)] font-bold uppercase tracking-[0.12em] opacity-80">
+                              <div className="relative z-[1] text-[9px] font-bold uppercase tracking-[0.12em] opacity-80">
                                 ROOM
                               </div>
                             </div>
-                            <div className="flex flex-1 items-center justify-center px-[clamp(14px,2vw,24px)] text-center text-[clamp(34px,3.8vw,60px)] font-extrabold tracking-[0.01em] text-[#2f2b23]">
+                            <div className="flex flex-1 items-center justify-center px-5 text-center text-[36px] font-extrabold tracking-[0.01em] text-[#2f2b23]">
                               {DOCTOR_NAMES[index] ?? ""}
                             </div>
                           </button>
