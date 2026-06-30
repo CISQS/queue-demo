@@ -409,7 +409,10 @@ export default function QueueDisplay() {
     <div className="min-h-screen w-full ui-sans-serif">
       <div className="flex min-h-screen w-full select-none flex-col bg-gradient-to-r from-[#eedcac] to-[#bce4be] text-black">
         <div className="bg-[#008d63]">
-          <div className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white">
+          <div
+            className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white"
+            style={station === "lab" ? { transform: "scale(0.9)", transformOrigin: "top center" } : undefined}
+          >
             <button
               type="button"
               onClick={() => navigate("/")}
@@ -544,8 +547,8 @@ export default function QueueDisplay() {
             </div>
           </div>
         ) : station === "lab" ? (
-          <div className="w-full flex-1 px-8 py-6">
-            <div className="flex w-full items-start gap-3">
+          <div className="w-full flex-1 px-4 py-5">
+            <div className="flex w-full items-start gap-2">
               <div className="flex h-[388px] w-[34%] min-w-0 shrink-0 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
                 <div className="flex h-11 items-center justify-center gap-2 bg-white/60 text-xl font-semibold tracking-wide">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#3d2714" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
