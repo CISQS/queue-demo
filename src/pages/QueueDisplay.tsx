@@ -361,11 +361,7 @@ export default function QueueDisplay() {
 
         {station === "dr" ? (
           <div className="w-full px-[clamp(16px,4vw,40px)] pt-[clamp(8px,2vh,16px)] pb-[clamp(6px,1.5vh,12px)]">
-            <table className="w-full table-fixed border-separate border-spacing-y-[clamp(10px,1.8vh,18px)] text-black">
-              <colgroup>
-                <col className="w-1/2" />
-                <col className="w-1/2" />
-              </colgroup>
+            <table className="w-full border-separate border-spacing-y-[clamp(10px,1.8vh,18px)] text-black">
               <thead>
                 <tr className="text-[clamp(26px,3.2vw,44px)]">
                   <th className="pb-2 text-left font-normal">號碼 Number</th>
@@ -377,7 +373,7 @@ export default function QueueDisplay() {
                   <tbody>
                     {rows.map((row, index) => (
                       <tr key={`counter-row-${row.counter}`}>
-                        <td className="w-1/2 pr-[clamp(12px,2vw,32px)] align-middle">
+                        <td className="pr-[clamp(12px,2vw,32px)] align-middle">
                           <button
                             type="button"
                             onClick={() => {
@@ -400,7 +396,7 @@ export default function QueueDisplay() {
                             {row.ticket || doctorMockTickets[index]}
                           </button>
                         </td>
-                        <td className="w-1/2 pl-[clamp(12px,2vw,32px)] align-middle">
+                        <td className="align-middle">
                           <button
                             type="button"
                             onClick={() => {
@@ -417,9 +413,9 @@ export default function QueueDisplay() {
                               WebkitTapHighlightColor: "transparent",
                             }}
                           >
-                            <div className="relative m-[clamp(6px,0.8vw,10px)] flex w-[clamp(76px,8vw,120px)] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[16px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 py-[clamp(10px,1.2vh,14px)] text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-7 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
+                            <div className="relative m-[clamp(8px,1vw,12px)] flex w-[clamp(96px,10vw,150px)] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[16px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 py-[clamp(10px,1.3vh,16px)] text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-7 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
                               <div
-                                className="relative z-[1] text-[clamp(36px,4.1vw,58px)] font-black leading-none tracking-[0.04em]"
+                                className="relative z-[1] text-[clamp(40px,4.5vw,64px)] font-black leading-none tracking-[0.04em]"
                                 style={{ textShadow: "0 2px 6px rgba(0, 0, 0, 0.18)" }}
                               >
                                 {DOCTOR_ROOMS[index] ?? ""}
@@ -428,7 +424,7 @@ export default function QueueDisplay() {
                                 ROOM
                               </div>
                             </div>
-                            <div className="flex flex-1 items-center justify-center px-[clamp(12px,1.6vw,20px)] text-center text-[clamp(32px,3.6vw,56px)] font-extrabold tracking-[0.01em] text-[#2f2b23]">
+                            <div className="flex flex-1 items-center justify-center px-[clamp(14px,2vw,24px)] text-center text-[clamp(34px,3.8vw,60px)] font-extrabold tracking-[0.01em] text-[#2f2b23]">
                               {DOCTOR_NAMES[index] ?? ""}
                             </div>
                           </button>
