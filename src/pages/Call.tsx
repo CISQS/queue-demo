@@ -265,12 +265,45 @@ function LabCallMockUI({ asset, onHome, onToggleFullscreen }: LabCallMockUIProps
   const [value, setValue] = useState("");
   const [mode, setMode] = useState<"num" | "alpha">("num");
   const [submitted, setSubmitted] = useState<string | null>(null);
+  const [now, setNow] = useState(() => new Date());
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     if (!submitted) return;
     const timer = window.setTimeout(() => setSubmitted(null), 1800);
     return () => window.clearTimeout(timer);
   }, [submitted]);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
+    const update = () => {
+      const doc = document as Document & {
+        webkitFullscreenElement?: Element | null;
+      };
+      setIsFullscreen(Boolean(doc.fullscreenElement ?? doc.webkitFullscreenElement));
+    };
+    update();
+    document.addEventListener("fullscreenchange", update);
+    document.addEventListener("webkitfullscreenchange", update as EventListener);
+    return () => {
+      document.removeEventListener("fullscreenchange", update);
+      document.removeEventListener("webkitfullscreenchange", update as EventListener);
+    };
+  }, []);
+
+  const formatDateTimeDDMMYYYYHHmmss = (date: Date) => {
+    const dd = String(date.getDate()).padStart(2, "0");
+    const mm = String(date.getMonth() + 1).padStart(2, "0");
+    const yyyy = String(date.getFullYear());
+    const hh = String(date.getHours()).padStart(2, "0");
+    const min = String(date.getMinutes()).padStart(2, "0");
+    const ss = String(date.getSeconds()).padStart(2, "0");
+    return `${dd}-${mm}-${yyyy} ${hh}:${min}:${ss}`;
+  };
 
   const append = (next: string) => {
     setValue((prev) => {
@@ -297,202 +330,230 @@ function LabCallMockUI({ asset, onHome, onToggleFullscreen }: LabCallMockUIProps
   const alphaKeys = Array.from({ length: 26 }, (_, idx) => String.fromCharCode(65 + idx));
 
   return (
-    <div className="min-h-screen bg-[#e6e6e6] text-[#222]">
-      <div className="h-10 w-full bg-[#2aa9b8]" />
-      <div className="flex items-center justify-between border-b border-black/10 bg-white px-4 py-2">
-        <div className="flex items-center gap-3">
-          <img
-            src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
-            className="h-6 w-6 rounded object-contain"
-            onError={(e) => {
-              e.currentTarget.style.display = "none";
-            }}
-          />
-          <div className="text-sm font-semibold">Queue System</div>
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={onToggleFullscreen}
-            className="inline-flex h-9 items-center justify-center rounded-lg border border-black/15 bg-white px-3 text-xs font-semibold text-black/70 shadow-sm transition hover:bg-black/[0.03] hover:text-black focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
-            style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-            aria-label="Full Screen"
-            title="Full Screen"
-          >
-            Full Screen
-          </button>
-          <button
-            type="button"
-            onClick={onHome}
-            className="inline-flex h-9 items-center justify-center rounded-lg border border-black/15 bg-white px-3 text-xs font-semibold text-black/70 shadow-sm transition hover:bg-black/[0.03] hover:text-black focus:outline-none focus:ring-2 focus:ring-[#2aa9b8]/25"
-            style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-          >
-            Home
-          </button>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-3xl px-6 py-8">
-        <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_18px_38px_rgba(0,0,0,0.10)]">
-          <div className="bg-[#2aa9b8] px-6 py-5 text-white">
-            <div className="text-[28px] font-semibold leading-none">檢驗自助報到</div>
-            <div className="mt-1 text-[18px] font-semibold opacity-95">Self Check In</div>
-          </div>
-
-          <div className="p-6">
-            <div className="rounded-2xl border border-black/10 bg-[#edeedd] p-5">
-              <div className="text-[18px] font-semibold text-[#1e1b16]">請掃碼</div>
-              <div className="text-sm font-semibold text-black/60">Please scan barcode</div>
-
-              <div className="mt-4 flex items-stretch gap-3">
-                <div className="flex min-w-0 flex-1 flex-col">
-                  <div className="relative">
-                    <input
-                      value={value}
-                      readOnly
-                      placeholder="請掃碼 / Please scan barcode"
-                      className="h-16 w-full rounded-2xl border border-black/10 bg-white px-5 pr-14 text-center text-[26px] font-semibold tracking-wider text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] outline-none"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        clear();
-                        setSubmitted(null);
-                      }}
-                      className="absolute right-4 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/5 text-lg font-bold text-black/50 transition hover:bg-black/10"
-                      aria-label="Clear"
-                      title="Clear"
-                      style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                    >
-                      ×
-                    </button>
-                  </div>
-                  {submitted && <div className="mt-2 text-center text-sm font-semibold text-[#008f70]">{`OK：${submitted}`}</div>}
-                </div>
-
-                <button
-                  type="button"
-                  onClick={backspace}
-                  className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-black/10 bg-white text-[22px] font-semibold text-black/70 shadow-sm transition hover:bg-black/[0.03] active:translate-y-[1px]"
-                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                  aria-label="Backspace"
-                  title="Backspace"
-                >
-                  ⌫
-                </button>
+    <div className="min-h-screen w-full ui-sans-serif">
+      <div className="flex min-h-screen w-full flex-col bg-[#e6e6e6] text-black">
+        <div className="bg-[#008d63]">
+          <div className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white">
+            <button
+              type="button"
+              onClick={onHome}
+              className="m-2 flex items-center pl-5 text-left"
+              style={{
+                touchAction: "manipulation",
+                WebkitTapHighlightColor: "transparent",
+              }}
+            >
+              <img
+                src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
+                className="h-16 cursor-pointer"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+              <div className="ml-5 cursor-pointer text-2xl font-bold">
+                檢驗
+                <br />
+                Lab
               </div>
+            </button>
+            <button
+              type="button"
+              onClick={onToggleFullscreen}
+              className="m-2 flex items-center text-sm"
+              style={{
+                touchAction: "manipulation",
+                WebkitTapHighlightColor: "transparent",
+              }}
+              aria-label={isFullscreen ? "退出全屏" : "進入全屏"}
+              title={isFullscreen ? "退出全屏" : "進入全屏"}
+            >
+              <div className="text-center text-xs">
+                <p className="text-base uppercase leading-none">
+                  <br />
+                  養和醫院
+                  <br />
+                  Hong Kong
+                  <br />
+                  Sanatorium &amp; Hospital <br />
+                  <br />
+                  <span className="font-semibold">{formatDateTimeDDMMYYYYHHmmss(now)}</span>
+                </p>
+              </div>
+              <div className="opacity-40">
+                <img
+                  src={asset("qdisplay/assets/logo-hksh-emc-sh-B1ezILO2.png")}
+                  className="min-h-20"
+                  onError={(e) => {
+                    e.currentTarget.style.display = "none";
+                  }}
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <div className="mx-auto max-w-3xl px-6 py-8">
+          <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_18px_38px_rgba(0,0,0,0.10)]">
+            <div className="bg-[#2aa9b8] px-6 py-5 text-white">
+              <div className="text-[28px] font-semibold leading-none">自助報到機</div>
+              <div className="mt-1 text-[18px] font-semibold opacity-95">Self Check In</div>
             </div>
 
-            <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_220px]">
-              <div className="rounded-2xl border border-black/10 bg-white p-5">
-                {mode === "num" ? (
-                  <div className="grid grid-cols-3 gap-3">
-                    {numKeys.map((key) => (
+            <div className="p-6">
+              <div className="rounded-2xl border border-black/10 bg-[#edeedd] p-5">
+                <div className="text-[18px] font-semibold text-[#1e1b16]">請掃碼</div>
+                <div className="text-sm font-semibold text-black/60">Please scan barcode</div>
+
+                <div className="mt-4 flex items-stretch gap-3">
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <div className="relative">
+                      <input
+                        value={value}
+                        readOnly
+                        placeholder="請掃碼 / Please scan barcode"
+                        className="h-16 w-full rounded-2xl border border-black/10 bg-white px-5 pr-14 text-center text-[26px] font-semibold tracking-wider text-black shadow-[inset_0_1px_0_rgba(255,255,255,0.5)] outline-none"
+                      />
                       <button
-                        key={`num-${key}`}
                         type="button"
-                        onClick={() => append(key)}
+                        onClick={() => {
+                          clear();
+                          setSubmitted(null);
+                        }}
+                        className="absolute right-4 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/5 text-lg font-bold text-black/50 transition hover:bg-black/10"
+                        aria-label="Clear"
+                        title="Clear"
+                        style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                    {submitted && <div className="mt-2 text-center text-sm font-semibold text-[#008f70]">{`OK：${submitted}`}</div>}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={backspace}
+                    className="inline-flex h-16 w-16 items-center justify-center rounded-2xl border border-black/10 bg-white text-[22px] font-semibold text-black/70 shadow-sm transition hover:bg-black/[0.03] active:translate-y-[1px]"
+                    style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                    aria-label="Backspace"
+                    title="Backspace"
+                  >
+                    ⌫
+                  </button>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-4 lg:grid-cols-[1fr_220px]">
+                <div className="rounded-2xl border border-black/10 bg-white p-5">
+                  {mode === "num" ? (
+                    <div className="grid grid-cols-3 gap-3">
+                      {numKeys.map((key) => (
+                        <button
+                          key={`num-${key}`}
+                          type="button"
+                          onClick={() => append(key)}
+                          className="h-20 rounded-2xl border border-black/10 bg-[#f7f7f7] text-[28px] font-semibold text-black shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
+                          style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                        >
+                          {key}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => setMode("alpha")}
+                        className="h-20 rounded-2xl border border-black/10 bg-[#f7f7f7] text-[22px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
+                        style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                      >
+                        abc
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => append("0")}
                         className="h-20 rounded-2xl border border-black/10 bg-[#f7f7f7] text-[28px] font-semibold text-black shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
                         style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                       >
-                        {key}
+                        0
                       </button>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => setMode("alpha")}
-                      className="h-20 rounded-2xl border border-black/10 bg-[#f7f7f7] text-[22px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
-                      style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                    >
-                      abc
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => append("0")}
-                      className="h-20 rounded-2xl border border-black/10 bg-[#f7f7f7] text-[28px] font-semibold text-black shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
-                      style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                    >
-                      0
-                    </button>
-                    <button
-                      type="button"
-                      onClick={backspace}
-                      className="h-20 rounded-2xl border border-black/10 bg-[#f7f7f7] text-[22px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
-                      style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                    >
-                      X
-                    </button>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-6 gap-2">
-                    {alphaKeys.map((key) => (
                       <button
-                        key={`alpha-${key}`}
                         type="button"
-                        onClick={() => append(key)}
-                        className="h-14 rounded-xl border border-black/10 bg-[#f7f7f7] text-[18px] font-semibold text-black shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
+                        onClick={backspace}
+                        className="h-20 rounded-2xl border border-black/10 bg-[#f7f7f7] text-[22px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
                         style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
                       >
-                        {key}
+                        X
                       </button>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => setMode("num")}
-                      className="col-span-2 h-14 rounded-xl border border-black/10 bg-[#f7f7f7] text-[18px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
-                      style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                    >
-                      123
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => append("-")}
-                      className="col-span-2 h-14 rounded-xl border border-black/10 bg-[#f7f7f7] text-[18px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
-                      style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                    >
-                      -
-                    </button>
-                    <button
-                      type="button"
-                      onClick={backspace}
-                      className="col-span-2 h-14 rounded-xl border border-black/10 bg-[#f7f7f7] text-[18px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
-                      style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                    >
-                      ⌫
-                    </button>
-                  </div>
-                )}
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-6 gap-2">
+                      {alphaKeys.map((key) => (
+                        <button
+                          key={`alpha-${key}`}
+                          type="button"
+                          onClick={() => append(key)}
+                          className="h-14 rounded-xl border border-black/10 bg-[#f7f7f7] text-[18px] font-semibold text-black shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
+                          style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                        >
+                          {key}
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() => setMode("num")}
+                        className="col-span-2 h-14 rounded-xl border border-black/10 bg-[#f7f7f7] text-[18px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
+                        style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                      >
+                        123
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => append("-")}
+                        className="col-span-2 h-14 rounded-xl border border-black/10 bg-[#f7f7f7] text-[18px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
+                        style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                      >
+                        -
+                      </button>
+                      <button
+                        type="button"
+                        onClick={backspace}
+                        className="col-span-2 h-14 rounded-xl border border-black/10 bg-[#f7f7f7] text-[18px] font-semibold text-black/70 shadow-[0_8px_18px_rgba(0,0,0,0.08)] transition hover:bg-[#f0f0f0] active:translate-y-[1px] active:shadow-[0_2px_6px_rgba(0,0,0,0.10)]"
+                        style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                      >
+                        ⌫
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      clear();
+                      setSubmitted(null);
+                    }}
+                    className="inline-flex h-20 items-center justify-center rounded-2xl border border-black/15 bg-white px-4 text-[22px] font-semibold text-black/80 shadow-sm transition hover:bg-black/[0.03] active:translate-y-[1px] active:scale-[0.99]"
+                    style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                  >
+                    清空 Clear
+                  </button>
+                  <button
+                    type="button"
+                    onClick={submit}
+                    className="inline-flex h-20 items-center justify-center rounded-2xl bg-[#00B18B] px-4 text-[22px] font-semibold text-white shadow-[0_10px_22px_rgba(0,177,139,0.22)] transition hover:bg-[#009a78] active:translate-y-[1px] active:scale-[0.99]"
+                    style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
+                  >
+                    完成 OK
+                  </button>
+                </div>
               </div>
 
-              <div className="grid gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    clear();
-                    setSubmitted(null);
-                  }}
-                  className="inline-flex h-20 items-center justify-center rounded-2xl border border-black/15 bg-white px-4 text-[22px] font-semibold text-black/80 shadow-sm transition hover:bg-black/[0.03] active:translate-y-[1px] active:scale-[0.99]"
-                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                >
-                  清空 Clear
-                </button>
-                <button
-                  type="button"
-                  onClick={submit}
-                  className="inline-flex h-20 items-center justify-center rounded-2xl bg-[#00B18B] px-4 text-[22px] font-semibold text-white shadow-[0_10px_22px_rgba(0,177,139,0.22)] transition hover:bg-[#009a78] active:translate-y-[1px] active:scale-[0.99]"
-                  style={{ touchAction: "manipulation", WebkitTapHighlightColor: "transparent" }}
-                >
-                  完成 OK
-                </button>
-              </div>
-            </div>
-
-            <div className="mt-6 rounded-2xl border border-black/10 bg-[#edeedd] px-5 py-4 text-center">
-              <div className="text-sm font-semibold text-black/75">
-                提示：請掃描患者通行證或備忘單上的二維碼排隊取號
-              </div>
-              <div className="mt-1 text-sm font-semibold text-black/55">
-                Please scan Patient Pass/ Investigation Reminder to get queue ticket
+              <div className="mt-6 rounded-2xl border border-black/10 bg-[#edeedd] px-5 py-4 text-center">
+                <div className="text-sm font-semibold text-black/75">
+                  提示：請掃描患者通行證或備忘單上的二維碼排隊取號
+                </div>
+                <div className="mt-1 text-sm font-semibold text-black/55">
+                  Please scan Patient Pass/ Investigation Reminder to get queue ticket
+                </div>
               </div>
             </div>
           </div>
