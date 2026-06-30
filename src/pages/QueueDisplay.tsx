@@ -409,7 +409,7 @@ export default function QueueDisplay() {
                       WebkitTapHighlightColor: "transparent",
                     }}
                   >
-                    <div className="relative m-2 flex h-[88px] w-[106px] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[14px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-7 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
+                    <div className="relative m-2 flex h-[80px] w-[96px] shrink-0 flex-col items-center justify-center gap-[1px] overflow-hidden rounded-[14px] bg-gradient-to-b from-[#0f8b6d] to-[#15735e] px-2 text-[#fffdf4] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.15),0_6px_14px_rgba(15,139,109,0.24)] before:absolute before:left-0 before:right-0 before:top-0 before:h-6 before:bg-gradient-to-b before:from-[rgba(255,255,255,0.18)] before:to-[rgba(255,255,255,0)] before:content-['']">
                       <div
                         className="relative z-[1] text-[clamp(30px,3.8vw,44px)] font-black leading-none tracking-[0.04em]"
                         style={{ textShadow: "0 2px 6px rgba(0, 0, 0, 0.18)" }}
