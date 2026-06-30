@@ -615,7 +615,7 @@ export default function QueueDisplay() {
               </div>
 
               <div className="flex h-[150px] w-full min-w-0 flex-col overflow-hidden rounded-2xl bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)] ring-1 ring-[#c8ac88]/10">
-                <div className="flex min-h-[64px] items-center justify-start gap-3 bg-[#00B18B] px-5 py-2 text-white">
+                <div className="flex min-h-[64px] items-center justify-start gap-3 border-b border-[#d8d2c7] bg-white px-5 py-2 text-[#3d2714]">
                   <svg
                     fill="currentColor"
                     version="1.1"
@@ -623,7 +623,7 @@ export default function QueueDisplay() {
                     xmlnsXlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 437.699 437.699"
                     xmlSpace="preserve"
-                    className="h-5 w-5"
+                    className="h-5 w-5 shrink-0"
                   >
                     <g>
                       <path
