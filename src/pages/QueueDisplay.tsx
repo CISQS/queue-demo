@@ -556,8 +556,9 @@ export default function QueueDisplay() {
                 <div className="flex h-[388px] w-[39%] min-w-0 shrink-0 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
                 <div className="flex h-11 items-center justify-center gap-2 bg-[#dff3e9] text-xl font-semibold tracking-wide">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#3d2714" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 3a9 9 0 1 0 9 9" />
-                    <path d="M12 7v5l3 2" />
+                    <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+                    <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+                    <path d="M18 6a8.5 8.5 0 0 1 0 12" />
                   </svg>
                   Now Serving
                 </div>
@@ -584,12 +585,12 @@ export default function QueueDisplay() {
                 <div className="flex h-[388px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
                 <div className="flex h-11 items-center justify-center gap-2 bg-[#dff3e9] text-xl font-semibold tracking-wide">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="#3d2714" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M8 6h13" />
-                    <path d="M8 12h13" />
-                    <path d="M8 18h13" />
-                    <path d="M3 6h.01" />
-                    <path d="M3 12h.01" />
-                    <path d="M3 18h.01" />
+                    <circle cx="6" cy="7" r="1.5" />
+                    <circle cx="6" cy="12" r="1.5" />
+                    <circle cx="6" cy="17" r="1.5" />
+                    <path d="M10 7h8" />
+                    <path d="M10 12h8" />
+                    <path d="M10 17h8" />
                   </svg>
                   Queuing
                 </div>
