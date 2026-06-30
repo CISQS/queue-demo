@@ -720,11 +720,11 @@ export default function QueueDisplay() {
                       <div className="text-[17px] font-semibold">For the following numbers, please approach our pathology staff</div>
                     </div>
                   </div>
-                  <div className="min-h-0 flex-1 overflow-hidden bg-[#f8fbf5] px-5 py-3">
+                  <div className="min-h-0 flex-1 overflow-hidden bg-[#f8fbf5] px-5 py-4">
                     {(() => {
                       const missedTickets = (labDisplay?.missed ?? []).slice(0, 4);
                       return (
-                        <div className="flex h-full max-h-[72px] flex-wrap content-start gap-x-12 gap-y-3 text-[25px] font-bold tabular-nums text-[#2f2b23]">
+                        <div className="flex h-full max-h-[84px] flex-wrap content-start gap-x-12 gap-y-3 text-[25px] font-bold tabular-nums text-[#2f2b23]">
                           {missedTickets.map((ticket) => (
                             <div key={`lab-missed-${ticket}`} className="h-[34px] leading-none whitespace-nowrap text-[#2f2b23]">
                               {ticket}
