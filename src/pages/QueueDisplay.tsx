@@ -411,12 +411,11 @@ export default function QueueDisplay() {
         <div className={station === "lab" ? "bg-transparent" : "bg-[#008d63]"}>
           <div
             className="inset-x-0 top-0 flex flex-wrap items-center justify-between bg-white"
-            style={station === "lab" ? { transform: "scale(0.9)", transformOrigin: "top center" } : undefined}
           >
             <button
               type="button"
               onClick={() => navigate("/")}
-              className="m-2 flex items-center pl-5 text-left"
+              className={station === "lab" ? "m-2 flex items-center pl-4 text-left" : "m-2 flex items-center pl-5 text-left"}
               style={{
                 touchAction: "manipulation",
                 WebkitTapHighlightColor: "transparent",
@@ -424,7 +423,7 @@ export default function QueueDisplay() {
             >
               <img
                 src={asset("qdisplay/assets/hksh_logo-CIMGYLsQ.png")}
-                className="h-16 cursor-pointer"
+                className={station === "lab" ? "h-14 cursor-pointer" : "h-16 cursor-pointer"}
                 onError={(e) => {
                   e.currentTarget.style.display = "none";
                 }}
@@ -434,7 +433,7 @@ export default function QueueDisplay() {
                   {displayStationZh} {displayStationEn}
                 </div>
               ) : (
-                <div className="ml-5 cursor-pointer text-2xl font-bold">
+                <div className={station === "lab" ? "ml-4 cursor-pointer text-[22px] font-bold" : "ml-5 cursor-pointer text-2xl font-bold"}>
                   {displayStationZh}
                   <br />
                   {displayStationEn}
@@ -444,7 +443,7 @@ export default function QueueDisplay() {
             <button
               type="button"
               onClick={toggleFullscreen}
-              className="m-2 flex items-center text-sm"
+              className={station === "lab" ? "m-2 flex items-center text-[13px]" : "m-2 flex items-center text-sm"}
               style={{
                 touchAction: "manipulation",
                 WebkitTapHighlightColor: "transparent",
