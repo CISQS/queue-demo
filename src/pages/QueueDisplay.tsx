@@ -491,9 +491,9 @@ export default function QueueDisplay() {
                   Queuing
                 </div>
                 <div className="min-h-0 flex-1 overflow-hidden px-5 py-4">
-                  <div className="flex h-full flex-col flex-wrap content-start gap-x-10 gap-y-3 text-[20px] font-bold tabular-nums text-[#0f8b6d]">
-                    {snapshot.next.slice(0, 18).map((t) => (
-                      <div key={`lab-queue-${t}`} className="leading-none whitespace-nowrap">
+                  <div className="flex h-full max-h-[204px] flex-col flex-wrap content-start gap-x-10 gap-y-2 text-[24px] font-bold tabular-nums text-[#0f8b6d]">
+                    {snapshot.next.slice(0, 7).map((t) => (
+                      <div key={`lab-queue-${t}`} className="min-h-[28px] leading-none whitespace-nowrap">
                         {t}
                       </div>
                     ))}
@@ -506,9 +506,9 @@ export default function QueueDisplay() {
                   Missed
                 </div>
                 <div className="min-h-0 flex-1 overflow-hidden px-5 py-4">
-                  <div className="flex h-full flex-col flex-wrap content-start gap-x-10 gap-y-3 text-[20px] font-bold tabular-nums text-[#0f8b6d]">
-                    {mergedNoticeTickets.slice(0, 18).map(({ ticket }) => (
-                      <div key={`lab-missed-${ticket}`} className="leading-none whitespace-nowrap">
+                  <div className="flex h-full max-h-[204px] flex-col flex-wrap content-start gap-x-10 gap-y-2 text-[24px] font-bold tabular-nums text-[#0f8b6d]">
+                    {mergedNoticeTickets.slice(0, 7).map(({ ticket }) => (
+                      <div key={`lab-missed-${ticket}`} className="min-h-[28px] leading-none whitespace-nowrap">
                         {ticket}
                       </div>
                     ))}
