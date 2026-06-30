@@ -583,17 +583,7 @@ export default function QueueDisplay() {
               </div>
 
                 <div className="flex h-[388px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#edeedd] text-black shadow-[0_20px_40px_rgba(0,0,0,0.08)] ring-1 ring-black/10">
-                <div className="flex h-11 items-center justify-center gap-2 bg-[#00B18B] text-xl font-semibold tracking-wide text-white">
-                  <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="6" cy="6" r="1.6" />
-                    <path d="M4.8 10.2c0-1 0.8-1.8 1.8-1.8h0.1c1 0 1.8 0.8 1.8 1.8v2.3H4.8z" />
-                    <circle cx="12" cy="9" r="1.6" />
-                    <path d="M10.8 13.2c0-1 0.8-1.8 1.8-1.8h0.1c1 0 1.8 0.8 1.8 1.8v2.3h-3.7z" />
-                    <circle cx="18" cy="12" r="1.6" />
-                    <path d="M16.8 16.2c0-1 0.8-1.8 1.8-1.8h0.1c1 0 1.8 0.8 1.8 1.8v2.3h-3.7z" />
-                    <path d="M8.8 11h1.8" />
-                    <path d="M14.8 14h1.8" />
-                  </svg>
+                <div className="flex h-11 items-center justify-center bg-[#00B18B] text-xl font-semibold tracking-wide text-white">
                   Queuing
                 </div>
                 <div className="min-h-0 flex-1 overflow-hidden bg-[#f8fbf5] px-5 py-4">
