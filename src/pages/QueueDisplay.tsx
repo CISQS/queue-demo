@@ -322,7 +322,7 @@ export default function QueueDisplay() {
 
   const labNowServingContent = (
     <>
-      <div className="mx-auto flex w-full max-w-[300px] items-center justify-between px-3 pb-2 pt-4 text-[15px] font-semibold tracking-wide text-black/55">
+      <div className="mx-auto flex w-full max-w-[300px] items-center justify-between px-3 pb-2 pt-4 text-[14px] font-semibold tracking-wide text-black/55">
         <div>房號 Room</div>
         <div>票號 Ticket No.</div>
       </div>
@@ -332,11 +332,11 @@ export default function QueueDisplay() {
             key={`lab-now-${idx}`}
             className="mx-auto flex min-h-[34px] w-full max-w-[280px] items-center justify-between gap-1 text-[20px] font-semibold"
           >
-            <div className="-translate-y-0.5 text-[30px] font-bold leading-none tabular-nums text-[#18a37f]">{`Room ${idx + 1}`}</div>
+            <div className="-translate-y-0.5 text-[28px] font-bold leading-none tabular-nums text-[#18a37f]">{`Room ${idx + 1}`}</div>
             <div
               className={[
                 ticket.trim() ? "text-[#18a37f]" : "text-[#2f2b23]",
-                "text-[30px] font-bold leading-none tabular-nums",
+                "text-[28px] font-bold leading-none tabular-nums",
               ].join(" ")}
             >
               {ticket}
@@ -351,7 +351,7 @@ export default function QueueDisplay() {
     <div className="flex min-h-0 flex-1 flex-col justify-start bg-[#f2f3ee] px-6 py-4">
       <div className="space-y-5 pt-2 text-left">
         {labQueueTickets.map((ticket, idx) => (
-          <div key={`lab-queue-${idx}`} className="text-[30px] font-semibold leading-none tracking-[0.01em] text-[#252525]">
+          <div key={`lab-queue-${idx}`} className="text-[28px] font-semibold leading-none tracking-[0.01em] text-[#252525]">
             {ticket}
           </div>
         ))}
@@ -373,7 +373,7 @@ export default function QueueDisplay() {
     <div className="flex min-h-0 flex-1 flex-col justify-start bg-[#f2f3ee] px-5 py-4">
       <div className="space-y-6 pt-1 text-left">
         {labMissedTickets.map((ticket, idx) => (
-          <div key={`lab-missed-v2-${idx}`} className="text-[29px] font-bold leading-none tabular-nums tracking-[0.005em] text-[#2f2b23]">
+          <div key={`lab-missed-v2-${idx}`} className="text-[27px] font-bold leading-none tabular-nums tracking-[0.005em] text-[#2f2b23]">
             {ticket}
           </div>
         ))}
