@@ -312,13 +312,13 @@ export default function QueueDisplay() {
           <path d="M15 9C16.3333 10.1 16.3333 13.9 15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           <path d="M17.5 6.5C20.1667 8.83333 20.1667 15.1667 17.5 17.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
         </svg>
-        <span>現在叫號 Now Serving</span>
+        <span>Now Serving</span>
       </div>
     </div>
   );
 
-  const labQueueHeader = <div className={labHeaderClass}>等待中 Queuing</div>;
-  const labMissedHeader = <div className={labHeaderClass}>已過號 Missed</div>;
+  const labQueueHeader = <div className={labHeaderClass}>Queuing</div>;
+  const labMissedHeader = <div className={labHeaderClass}>Missed</div>;
 
   const labNowServingContent = (
     <>
