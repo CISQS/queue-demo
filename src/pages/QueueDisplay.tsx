@@ -20,11 +20,12 @@ const FIXED_NOTICE_STORAGE_PREFIX = "queue-display-fixed-notice";
 const DOCTOR_ROOMS = ["A", "B", "C", "D"];
 const MOCK_TICKET_CYCLE = [
   "",
-  "SHK123",
+  "SKH211",
+  "SKH224",
   "SHH304",
   "SML321",
 ];
-const LAB_NOW_SERVING_MOCK = ["SKH211", "SML421", "SHH331", ""];
+const LAB_NOW_SERVING_MOCK = ["SKH211", "SKH224", "SHH304", "SML321"];
 
 function nextMockTicket(current: string) {
   const idx = MOCK_TICKET_CYCLE.indexOf(current);

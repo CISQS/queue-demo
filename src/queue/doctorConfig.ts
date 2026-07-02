@@ -1,7 +1,7 @@
 export const DOCTOR_NAMES_STORAGE_KEY = "queue-display:doctor-names";
 export const DOCTOR_NAMES_UPDATED_EVENT = "queue-display-doctor-names";
 
-export const DEFAULT_DOCTOR_NAMES = ["常健康", "常開心", "常快樂", "常輕鬆"];
+export const DEFAULT_DOCTOR_NAMES = ["袁兆文醫生", "游華漢醫生", "常醫仁醫生", ""];
 
 function normalizeNames(input: unknown) {
   if (!Array.isArray(input)) return null;
@@ -30,4 +30,3 @@ export function saveDoctorNames(names: string[]) {
   window.localStorage.setItem(DOCTOR_NAMES_STORAGE_KEY, JSON.stringify(normalized));
   window.dispatchEvent(new Event(DOCTOR_NAMES_UPDATED_EVENT));
 }
-
