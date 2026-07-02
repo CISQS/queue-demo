@@ -381,6 +381,45 @@ export default function QueueDisplay() {
     </div>
   );
 
+  const labNowServingV1Content = (
+    <>
+      <div className="mx-auto flex w-full max-w-[282px] items-center justify-between px-3 py-3 text-[13px] font-semibold tracking-wide text-black/55">
+        <div>房號 Room</div>
+        <div>票號 Ticket No.</div>
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col gap-y-[14px] px-5 py-1">
+        {labNowServingTickets.map((ticket, idx) => (
+          <div
+            key={`lab-v1-now-${idx}`}
+            className="mx-auto flex min-h-[32px] w-full max-w-[282px] items-center justify-between gap-2"
+          >
+            <div className="-translate-y-[1px] text-[28px] font-bold leading-none tabular-nums text-[#22a18d]">{`Room ${idx + 1}`}</div>
+            <div
+              className={[
+                ticket.trim() ? "text-[#22a18d]" : "text-[#2f2b23]",
+                "text-[28px] font-bold leading-none tabular-nums",
+              ].join(" ")}
+            >
+              {ticket}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+
+  const labQueueV1Content = (
+    <div className="flex min-h-0 flex-1 flex-col justify-start bg-[#f2f3ee] px-6 py-5">
+      <div className="space-y-[20px] pt-1 text-left">
+        {labQueueTickets.map((ticket, idx) => (
+          <div key={`lab-v1-queue-${idx}`} className="text-[28px] font-bold leading-none tracking-[0.005em] text-[#252525]">
+            {ticket}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
   const columnLabelZh = station === "dr" ? "醫生" : "櫃位";
   const columnLabelEn = station === "dr" ? "Doctor" : "Counter";
   const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`;
@@ -646,17 +685,17 @@ export default function QueueDisplay() {
                     <div className="flex w-full items-start gap-[6px]">
                       <div className={`flex h-[328px] w-[39%] min-w-0 flex-col rounded-[16px] ${labPanelClass}`}>
                         {labNowServingHeader}
-                        <div className="min-h-0 flex-1 bg-[#f2f3ee] py-2">{labNowServingContent}</div>
+                        <div className="min-h-0 flex-1 bg-[#f2f3ee] py-2">{labNowServingV1Content}</div>
                       </div>
 
                       <div className={`flex h-[328px] min-w-0 flex-1 flex-col rounded-[16px] ${labPanelClass}`}>
                         {labQueueHeader}
-                        {labQueueContent}
+                        {labQueueV1Content}
                       </div>
                     </div>
 
-                    <div className="mt-[6px] flex h-[152px] w-full min-w-0 flex-col overflow-hidden rounded-[16px] bg-white text-black shadow-[0_14px_26px_rgba(84,103,57,0.05)] ring-1 ring-[#d5ddc8]">
-                      <div className="flex min-h-[60px] items-center justify-start gap-3 border-b border-[#d8d8d3] bg-white px-5 py-2 text-[#4a2b12]">
+                    <div className="mt-[6px] flex h-[151px] w-full min-w-0 flex-col overflow-hidden rounded-[16px] bg-white text-black shadow-[0_14px_26px_rgba(84,103,57,0.05)] ring-1 ring-[#d5ddc8]">
+                      <div className="flex min-h-[60px] items-center justify-start gap-3 border-b border-[#d3d4cf] bg-white px-5 py-2 text-[#4a2b12]">
                         <svg
                           fill="#4a2b12"
                           version="1.1"
@@ -672,7 +711,7 @@ export default function QueueDisplay() {
                         </svg>
                         <div className="text-left leading-tight">
                           <div className="text-[18px] font-semibold">以下號碼請聯絡病理部職員</div>
-                          <div className="text-[18px] font-semibold">For the following numbers, please approach our pathology staff</div>
+                          <div className="text-[17px] font-semibold">For the following numbers, please approach our pathology staff</div>
                         </div>
                       </div>
                       <div className="min-h-0 flex-1 overflow-hidden">{labMissedV1Content}</div>
