@@ -295,10 +295,34 @@ export default function QueueDisplay() {
   const labNowServingTickets = Array.from({ length: 4 }).map((_, idx) => labDisplay?.nowServing[idx] ?? "");
   const labQueueTickets = Array.from({ length: 2 }).map((_, idx) => labDisplay?.queue[idx] ?? "");
   const labMissedTickets = Array.from({ length: 4 }).map((_, idx) => labDisplay?.missed[idx] ?? "");
+  const labHeaderClass = "flex min-h-[44px] items-center justify-center bg-[#14b59a] px-5 text-[20px] font-bold text-white";
+  const labPanelClass = "overflow-hidden bg-[#f2f3ee] text-black shadow-[0_10px_22px_rgba(84,103,57,0.05)]";
+
+  const labNowServingHeader = (
+    <div className={labHeaderClass}>
+      <div className="flex items-center gap-2">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 shrink-0"
+          aria-hidden="true"
+        >
+          <path d="M4 14V10H7L11 6V18L7 14H4Z" fill="currentColor" />
+          <path d="M15 9C16.3333 10.1 16.3333 13.9 15 15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          <path d="M17.5 6.5C20.1667 8.83333 20.1667 15.1667 17.5 17.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+        </svg>
+        <span>現在叫號 Now Serving</span>
+      </div>
+    </div>
+  );
+
+  const labQueueHeader = <div className={labHeaderClass}>等待中 Queuing</div>;
+  const labMissedHeader = <div className={labHeaderClass}>已過號 Missed</div>;
 
   const labNowServingContent = (
     <>
-      <div className="mx-auto flex w-full max-w-[280px] items-center justify-between px-2 py-2 text-[13px] font-semibold tracking-wide text-black/55">
+      <div className="mx-auto flex w-full max-w-[280px] items-center justify-between px-2 py-3 text-[13px] font-semibold tracking-wide text-black/55">
         <div>房號 Room</div>
         <div>票號 Ticket No.</div>
       </div>
@@ -324,10 +348,10 @@ export default function QueueDisplay() {
   );
 
   const labQueueContent = (
-    <div className="flex min-h-0 flex-1 flex-col justify-center bg-[#f8fbf5] px-6 py-4">
-      <div className="space-y-4 text-center">
+    <div className="flex min-h-0 flex-1 flex-col justify-start bg-[#f2f3ee] px-6 py-4">
+      <div className="space-y-5 pt-2 text-left">
         {labQueueTickets.map((ticket, idx) => (
-          <div key={`lab-queue-${idx}`} className="text-[34px] font-semibold leading-none tracking-[0.01em] text-black">
+          <div key={`lab-queue-${idx}`} className="text-[30px] font-semibold leading-none tracking-[0.01em] text-[#252525]">
             {ticket}
           </div>
         ))}
@@ -335,13 +359,25 @@ export default function QueueDisplay() {
     </div>
   );
 
-  const labMissedContent = (
-    <div className="grid h-full min-h-0 grid-cols-2 content-start gap-x-8 gap-y-4 overflow-hidden bg-[#f8fbf5] px-5 py-5">
+  const labMissedV1Content = (
+    <div className="grid h-full min-h-0 grid-cols-4 items-start gap-x-4 overflow-hidden bg-[#f2f3ee] px-5 py-4">
       {labMissedTickets.map((ticket, idx) => (
-        <div key={`lab-missed-${idx}`} className="text-[30px] font-semibold leading-none tabular-nums text-black">
+        <div key={`lab-missed-v1-${idx}`} className="text-[27px] font-semibold leading-none tabular-nums text-[#2f2b23]">
           {ticket}
         </div>
       ))}
+    </div>
+  );
+
+  const labMissedV2Content = (
+    <div className="flex min-h-0 flex-1 flex-col justify-start bg-[#f2f3ee] px-6 py-4">
+      <div className="space-y-5 pt-2 text-left">
+        {labMissedTickets.map((ticket, idx) => (
+          <div key={`lab-missed-v2-${idx}`} className="text-[30px] font-semibold leading-none tabular-nums text-[#2f2b23]">
+          {ticket}
+        </div>
+      ))}
+      </div>
     </div>
   );
 
@@ -587,52 +623,42 @@ export default function QueueDisplay() {
             ) : station === "lab" ? (
               <div className="w-full px-8 pb-6 pt-5">
                 {isLabDraftV2 ? (
-                  <div className="flex w-full items-start gap-[2px]">
-                    <div className="flex h-[328px] min-w-0 flex-1 flex-col overflow-hidden rounded-l-[10px] rounded-r-none bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
-                      <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#2f2b23]">
-                        現在叫號 Now Serving
+                  <div className="overflow-hidden rounded-[14px] bg-[#dceecf] p-[1px] shadow-[0_14px_26px_rgba(84,103,57,0.06)]">
+                    <div className="flex w-full items-stretch gap-0">
+                      <div className={`flex h-[386px] min-w-0 flex-1 flex-col rounded-l-[13px] border-r border-[#c7d8bd] ${labPanelClass}`}>
+                        {labNowServingHeader}
+                        <div className="min-h-0 flex-1 bg-[#f2f3ee] py-2">{labNowServingContent}</div>
                       </div>
-                      <div className="min-h-0 flex-1 bg-[#f8fbf5] py-2">{labNowServingContent}</div>
-                    </div>
 
-                    <div className="flex min-w-0 flex-[2] gap-[2px]">
-                      <div className="flex h-[328px] min-w-0 flex-1 flex-col overflow-hidden rounded-none bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
-                        <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#2f2b23]">
-                          等待中 Queuing
-                        </div>
+                      <div className={`flex h-[386px] min-w-0 flex-1 flex-col border-r border-[#c7d8bd] ${labPanelClass}`}>
+                        {labQueueHeader}
                         {labQueueContent}
                       </div>
 
-                      <div className="flex h-[388px] min-w-0 flex-1 flex-col overflow-hidden rounded-l-none rounded-r-[10px] bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
-                        <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#3d2714]">
-                          已過號 Missed
-                        </div>
-                        {labMissedContent}
+                      <div className={`flex h-[386px] min-w-0 flex-1 flex-col rounded-r-[13px] ${labPanelClass}`}>
+                        {labMissedHeader}
+                        {labMissedV2Content}
                       </div>
                     </div>
                   </div>
                 ) : (
                   <>
                     <div className="flex w-full items-start gap-[6px]">
-                      <div className="flex h-[328px] w-[39%] min-w-0 flex-col overflow-hidden rounded-[10px] bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
-                        <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#2f2b23]">
-                          現在叫號 Now Serving
-                        </div>
-                        <div className="min-h-0 flex-1 bg-[#f8fbf5] py-2">{labNowServingContent}</div>
+                      <div className={`flex h-[328px] w-[39%] min-w-0 flex-col rounded-[16px] ${labPanelClass}`}>
+                        {labNowServingHeader}
+                        <div className="min-h-0 flex-1 bg-[#f2f3ee] py-2">{labNowServingContent}</div>
                       </div>
 
-                      <div className="flex h-[328px] min-w-0 flex-1 flex-col overflow-hidden rounded-[10px] bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
-                        <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#2f2b23]">
-                          等待中 Queuing
-                        </div>
+                      <div className={`flex h-[328px] min-w-0 flex-1 flex-col rounded-[16px] ${labPanelClass}`}>
+                        {labQueueHeader}
                         {labQueueContent}
                       </div>
                     </div>
 
-                    <div className="mt-[6px] flex h-[180px] w-full min-w-0 flex-col overflow-hidden rounded-[10px] bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)] ring-1 ring-[#c8ac88]/10">
-                      <div className="flex min-h-[64px] items-center justify-start gap-3 border-b border-[#d8d2c7] bg-white px-5 py-2 text-[#3d2714]">
+                    <div className="mt-[6px] flex h-[152px] w-full min-w-0 flex-col overflow-hidden rounded-[16px] bg-white text-black shadow-[0_14px_26px_rgba(84,103,57,0.05)] ring-1 ring-[#d5ddc8]">
+                      <div className="flex min-h-[60px] items-center justify-start gap-3 border-b border-[#d8d8d3] bg-white px-5 py-2 text-[#4a2b12]">
                         <svg
-                          fill="#3d2714"
+                          fill="#4a2b12"
                           version="1.1"
                           xmlns="http://www.w3.org/2000/svg"
                           xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -649,7 +675,7 @@ export default function QueueDisplay() {
                           <div className="text-[18px] font-semibold">For the following numbers, please approach our pathology staff</div>
                         </div>
                       </div>
-                      <div className="min-h-0 flex-1 overflow-hidden">{labMissedContent}</div>
+                      <div className="min-h-0 flex-1 overflow-hidden">{labMissedV1Content}</div>
                     </div>
                   </>
                 )}
