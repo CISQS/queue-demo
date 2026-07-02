@@ -142,7 +142,6 @@ export default function Home() {
           role="dialog"
           aria-modal="true"
           aria-label="設定醫生名字"
-          onClick={() => setShowDoctorSettings(false)}
         >
           <div
             className="w-full max-w-lg rounded-xl bg-white shadow-xl"

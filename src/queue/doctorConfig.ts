@@ -12,6 +12,10 @@ function normalizeNames(input: unknown) {
   return names;
 }
 
+function applyDefaults(names: string[]) {
+  return names.map((name, idx) => name || DEFAULT_DOCTOR_NAMES[idx]);
+}
+
 export function loadDoctorNames() {
   if (typeof window === "undefined") return DEFAULT_DOCTOR_NAMES;
   try {
@@ -21,7 +25,7 @@ export function loadDoctorNames() {
     const normalized = normalizeNames(parsed);
     if (!normalized) return DEFAULT_DOCTOR_NAMES;
     if (normalized.every((name, idx) => name === LEGACY_DEFAULT_DOCTOR_NAMES[idx])) return DEFAULT_DOCTOR_NAMES;
-    return normalized.map((name, idx) => name || DEFAULT_DOCTOR_NAMES[idx]);
+    return applyDefaults(normalized);
   } catch {
     return DEFAULT_DOCTOR_NAMES;
   }
@@ -30,7 +34,7 @@ export function loadDoctorNames() {
 export function saveDoctorNames(names: string[]) {
   if (typeof window === "undefined") return;
   const normalized = normalizeNames(names) ?? DEFAULT_DOCTOR_NAMES;
-  window.localStorage.setItem(DOCTOR_NAMES_STORAGE_KEY, JSON.stringify(normalized));
+  window.localStorage.setItem(DOCTOR_NAMES_STORAGE_KEY, JSON.stringify(applyDefaults(normalized)));
   window.dispatchEvent(new Event(DOCTOR_NAMES_UPDATED_EVENT));
 }
 
