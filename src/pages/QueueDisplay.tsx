@@ -393,11 +393,11 @@ export default function QueueDisplay() {
             key={`lab-v1-now-${idx}`}
             className="mx-auto flex min-h-[32px] w-full max-w-[300px] items-center justify-between gap-4"
           >
-            <div className="-translate-y-[1px] text-[28px] font-bold leading-none tabular-nums text-[#22a18d]">{`Room ${idx + 1}`}</div>
+            <div className="-translate-y-[1px] text-[27px] font-bold leading-none tabular-nums text-[#22a18d]">{`Room ${idx + 1}`}</div>
             <div
               className={[
                 ticket.trim() ? "text-[#22a18d]" : "text-[#2f2b23]",
-                "text-[28px] font-bold leading-none tabular-nums",
+                "text-[27px] font-bold leading-none tabular-nums",
               ].join(" ")}
             >
               {ticket}
