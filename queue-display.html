@@ -572,6 +572,148 @@
       text-transform: uppercase;
       opacity: 0.82;
     }
+
+    .lab-screen {
+      width: 100%;
+      flex: 1 1 auto;
+      display: block;
+      padding: 0;
+    }
+
+    .lab-shell {
+      width: 100%;
+      max-width: 1152px;
+      margin: 0 auto;
+      padding: 32px 40px 0;
+    }
+
+    .lab-card {
+      overflow: hidden;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .lab-card-header {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: #16b194;
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .lab-card-header > div {
+      padding: 12px 0;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .lab-card-header > div:not(:last-child) {
+      border-right: 1px solid rgba(255, 255, 255, 0.35);
+    }
+
+    .lab-now-title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .lab-now-title svg {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+    }
+
+    .lab-card-body {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .lab-col {
+      padding: 24px 24px 40px;
+    }
+
+    .lab-col:not(:last-child) {
+      border-right: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .lab-now-head {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 32px;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    .lab-now-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .lab-now-item {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 32px;
+      align-items: center;
+    }
+
+    .lab-room {
+      font-size: 24px;
+      font-weight: 600;
+      color: #008d63;
+    }
+
+    .lab-ticket {
+      font-size: 24px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: #008d63;
+    }
+
+    .lab-ticket.suspended {
+      color: rgba(0, 0, 0, 0.35);
+    }
+
+    .lab-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      font-size: 24px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: rgba(0, 0, 0, 0.75);
+    }
+
+    .lab-footer {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    .lab-footer svg {
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      .lab-shell {
+        padding: 28px 16px 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -609,6 +751,52 @@
         <div class="doctor-header-number">號碼 Number</div>
       </div>
       <div id="doctorRows" class="doctor-rows"></div>
+    </div>
+
+    <div id="labScreen" class="lab-screen" style="display:none">
+      <div class="lab-shell">
+        <div class="lab-card">
+          <div class="lab-card-header">
+            <div>
+              <div class="lab-now-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M11 5 6 9H3v6h3l5 4V5Z"></path>
+                  <path d="M15.5 8.5a5 5 0 0 1 0 7"></path>
+                  <path d="M18 6a8.5 8.5 0 0 1 0 12"></path>
+                </svg>
+                <span>進行中 Now Serving</span>
+              </div>
+            </div>
+            <div>待叫號 Queuing</div>
+            <div>已過號 Missed</div>
+          </div>
+
+          <div class="lab-card-body">
+            <div class="lab-col">
+              <div class="lab-now-head">
+                <div>房號 Room</div>
+                <div>票號 Ticket No.</div>
+              </div>
+              <div id="labNowList" class="lab-now-list"></div>
+            </div>
+            <div class="lab-col">
+              <div id="labQueueList" class="lab-list"></div>
+            </div>
+            <div class="lab-col">
+              <div id="labMissedList" class="lab-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-footer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M12 7v6"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          <div>已過號請前往接待處 If your number has been missed, please proceed to the reception counter.</div>
+        </div>
+      </div>
     </div>
 
     <div class="board">
@@ -663,14 +851,19 @@
     const STATIONS = [
       { key: "dr", labelZh: "醫生站", labelEn: "Doctor Station", wait: 15, columnZh: "醫生", columnEn: "Doctor" },
       { key: "nurse", labelZh: "護士分流站", labelEn: "Nurse Station", wait: 10, columnZh: "櫃位", columnEn: "Counter" },
-      { key: "pharmacy", labelZh: "藥房", labelEn: "Pharmacy", wait: 20, columnZh: "櫃位", columnEn: "Counter" }
+      { key: "pharmacy", labelZh: "藥房", labelEn: "Pharmacy", wait: 20, columnZh: "櫃位", columnEn: "Counter" },
+      { key: "lab", labelZh: "病理部", labelEn: "Department of Pathology", wait: 0, columnZh: "", columnEn: "" }
     ];
 
-    const COUNTER_CYCLE = ["", "SHK123", "SHH304", "SML321"];
-    const DOCTOR_DEFAULT_NAMES = ["常健康", "常開心", "常快樂", "常輕鬆"];
+    const COUNTER_CYCLE = ["", "SKH211", "SKH224", "SHH304", "SML321"];
+    const DOCTOR_DEFAULT_NAMES = ["袁兆文醫生", "游華漢醫生", "常醫仁醫生", ""];
     const DOCTOR_NAMES_STORAGE_KEY = "queue-display:doctor-names";
-    const MOCK_TICKET_CYCLE = ["", "SHK123", "SHH304", "SML321"];
+    const MOCK_TICKET_CYCLE = ["", "SKH211", "SKH224", "SHH304", "SML321"];
     const DOCTOR_ROOMS = ["A", "B", "C", "D"];
+    const LAB_ROOMS = ["Room 1", "Room 2", "Room 3", "Room 4"];
+    const LAB_ROOM_TICKETS = ["N0001", "N0002", "N0004", "Suspended"];
+    const LAB_QUEUEING_TICKETS = ["U0001", "U0002", "N0005", "N0006", "N0007"];
+    const LAB_MISSED_TICKETS = ["N0003"];
     const MOCK_TICKET_PRESETS = [
       { prefix: "SHK", start: 123 },
       { prefix: "SHH", start: 304 },
@@ -701,6 +894,10 @@
     const rows = document.getElementById("rows");
     const doctorScreen = document.getElementById("doctorScreen");
     const doctorRows = document.getElementById("doctorRows");
+    const labScreen = document.getElementById("labScreen");
+    const labNowList = document.getElementById("labNowList");
+    const labQueueList = document.getElementById("labQueueList");
+    const labMissedList = document.getElementById("labMissedList");
     const toggleMock = document.getElementById("toggleMock");
     const noticeGrid = document.getElementById("noticeGrid");
     const nurseScreen = document.getElementById("nurseScreen");
@@ -802,8 +999,8 @@
       stationEn.textContent = station.labelEn;
       stationButton.title = `目前顯示 ${station.labelZh} ${station.labelEn}，點擊切換 station`;
       stationButton.setAttribute("aria-label", `切換 station，目前顯示 ${station.labelZh} ${station.labelEn}`);
-      counterLabel.textContent = `${station.columnZh} ${station.columnEn}`;
-      waitingMins.textContent = String(station.wait);
+      counterLabel.textContent = station.key === "lab" ? "" : `${station.columnZh} ${station.columnEn}`;
+      waitingMins.textContent = station.key === "lab" ? "" : String(station.wait);
       applyStationLayout();
     }
 
@@ -812,12 +1009,14 @@
       document.body.dataset.station = stationKey;
       const isNurse = stationKey === "nurse";
       const isDoctor = stationKey === "dr";
+      const isLab = stationKey === "lab";
       nurseScreen.style.display = isNurse ? "flex" : "none";
       doctorScreen.style.display = isDoctor ? "block" : "none";
-      board.style.display = isNurse || isDoctor ? "none" : "block";
-      waiting.style.display = isNurse || isDoctor ? "none" : "flex";
-      toggleMock.style.display = isNurse || isDoctor ? "none" : "flex";
-      noticeGrid.style.display = isNurse || isDoctor ? "none" : "flex";
+      labScreen.style.display = isLab ? "block" : "none";
+      board.style.display = isNurse || isDoctor || isLab ? "none" : "block";
+      waiting.style.display = isNurse || isDoctor || isLab ? "none" : "flex";
+      toggleMock.style.display = isNurse || isDoctor || isLab ? "none" : "flex";
+      noticeGrid.style.display = isNurse || isDoctor || isLab ? "none" : "flex";
       if (isNurse) {
         nurseTicket.textContent = rowsState.find((item) => item.counter === 1)?.ticket || "";
       }
@@ -872,7 +1071,49 @@
       renderNotice();
     }
 
+    function renderLabV2() {
+      if (!labNowList || !labQueueList || !labMissedList) return;
+
+      labNowList.innerHTML = "";
+      LAB_ROOMS.forEach((room, idx) => {
+        const row = document.createElement("div");
+        row.className = "lab-now-item";
+
+        const roomEl = document.createElement("div");
+        roomEl.className = "lab-room";
+        roomEl.textContent = room;
+
+        const ticket = LAB_ROOM_TICKETS[idx] || "";
+        const ticketEl = document.createElement("div");
+        ticketEl.className = `lab-ticket${ticket === "Suspended" ? " suspended" : ""}`;
+        ticketEl.textContent = ticket;
+
+        row.appendChild(roomEl);
+        row.appendChild(ticketEl);
+        labNowList.appendChild(row);
+      });
+
+      labQueueList.innerHTML = "";
+      LAB_QUEUEING_TICKETS.forEach((ticket) => {
+        const item = document.createElement("div");
+        item.textContent = ticket;
+        labQueueList.appendChild(item);
+      });
+
+      labMissedList.innerHTML = "";
+      LAB_MISSED_TICKETS.forEach((ticket) => {
+        const item = document.createElement("div");
+        item.textContent = ticket;
+        labMissedList.appendChild(item);
+      });
+    }
+
     function renderRows() {
+      if (currentStation().key === "lab") {
+        applyStationLayout();
+        renderLabV2();
+        return;
+      }
       if (currentStation().key === "nurse") {
         applyStationLayout();
         return;
