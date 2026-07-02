@@ -839,8 +839,8 @@
         </g>
       </svg>
       <div>
-        <div>以下號碼請聯絡門診職員</div>
-        <div>For the following numbers, please approach our staff</div>
+        <div id="noticeTitleZh">以下號碼請聯絡門診職員</div>
+        <div id="noticeTitleEn">For the following numbers, please approach our staff</div>
       </div>
     </button>
 
@@ -899,6 +899,8 @@
     const labQueueList = document.getElementById("labQueueList");
     const labMissedList = document.getElementById("labMissedList");
     const toggleMock = document.getElementById("toggleMock");
+    const noticeTitleZh = document.getElementById("noticeTitleZh");
+    const noticeTitleEn = document.getElementById("noticeTitleEn");
     const noticeGrid = document.getElementById("noticeGrid");
     const nurseScreen = document.getElementById("nurseScreen");
     const nurseTicket = document.getElementById("nurseTicket");
@@ -999,6 +1001,15 @@
       stationEn.textContent = station.labelEn;
       stationButton.title = `目前顯示 ${station.labelZh} ${station.labelEn}，點擊切換 station`;
       stationButton.setAttribute("aria-label", `切換 station，目前顯示 ${station.labelZh} ${station.labelEn}`);
+      if (noticeTitleZh && noticeTitleEn) {
+        if (station.key === "pharmacy") {
+          noticeTitleZh.textContent = "以下號碼請聯絡藥房職員";
+          noticeTitleEn.textContent = "For the following numbers, please approach our pharmacy staff";
+        } else {
+          noticeTitleZh.textContent = "以下號碼請聯絡門診職員";
+          noticeTitleEn.textContent = "For the following numbers, please approach our staff";
+        }
+      }
       counterLabel.textContent = station.key === "lab" ? "" : `${station.columnZh} ${station.columnEn}`;
       waitingMins.textContent = station.key === "lab" ? "" : String(station.wait);
       applyStationLayout();

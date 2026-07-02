@@ -1013,8 +1013,12 @@ export default function QueueDisplay() {
                     </g>
                   </svg>
                   <div>
-                    <div>以下號碼請聯絡門診職員</div>
-                    <div>For the following numbers, please approach our staff</div>
+                    <div>{station === "pharmacy" ? "以下號碼請聯絡藥房職員" : "以下號碼請聯絡門診職員"}</div>
+                    <div>
+                      {station === "pharmacy"
+                        ? "For the following numbers, please approach our pharmacy staff"
+                        : "For the following numbers, please approach our staff"}
+                    </div>
                   </div>
                 </button>
 
