@@ -24,11 +24,58 @@ const MOCK_TICKET_CYCLE = [
   "SHH304",
   "SML321",
 ];
+const LAB_NOW_SERVING_MOCK = ["SKH211", "SML421", "SHH331", ""];
 
 function nextMockTicket(current: string) {
   const idx = MOCK_TICKET_CYCLE.indexOf(current);
   if (idx < 0) return MOCK_TICKET_CYCLE[1];
   return MOCK_TICKET_CYCLE[(idx + 1) % MOCK_TICKET_CYCLE.length];
+}
+
+function isDefaultLabTicket(ticket: string) {
+  return /^L\d{3}$/.test(ticket.trim().toUpperCase());
+}
+
+function hashToSeed(input: string) {
+  let h = 2166136261;
+  for (let i = 0; i < input.length; i += 1) {
+    h ^= input.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function mulberry32(seed: number) {
+  let t = seed >>> 0;
+  return () => {
+    t += 0x6d2b79f5;
+    let x = Math.imul(t ^ (t >>> 15), t | 1);
+    x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function randomLabTicket(rand: () => number) {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const a = letters[Math.floor(rand() * 26)] ?? "S";
+  const b = letters[Math.floor(rand() * 26)] ?? "H";
+  const c = letters[Math.floor(rand() * 26)] ?? "S";
+  const num = String(Math.floor(rand() * 1000)).padStart(3, "0");
+  return `${a}${b}${c}${num}`;
+}
+
+function generateLabTickets(count: number, seedInput: string, exclude: Set<string>) {
+  const rand = mulberry32(hashToSeed(seedInput));
+  const out: string[] = [];
+  let tries = 0;
+  while (out.length < count && tries < 5000) {
+    tries += 1;
+    const t = randomLabTicket(rand);
+    if (exclude.has(t)) continue;
+    exclude.add(t);
+    out.push(t);
+  }
+  return out;
 }
 
 function getFixedNoticeStorageKey(station: StationKey) {
@@ -78,6 +125,8 @@ export default function QueueDisplay() {
   const [params] = useSearchParams();
   const stationFromQuery = params.get("station") ?? getLastStation();
   const station: StationKey = isStationKey(stationFromQuery) ? stationFromQuery : "dr";
+  const labDraft = (params.get("draft") ?? "").trim().toLowerCase();
+  const isLabDraftV2 = station === "lab" && labDraft === "v2";
 
   const stationOption = useMemo(() => getStationOption(station), [station]);
   const displayStationZh = station === "dr" ? "醫生站" : stationOption.labelZh;
@@ -216,6 +265,86 @@ export default function QueueDisplay() {
     return out;
   }, [fixedNoticeTickets, passedTickets, showFixedNoticeTickets]);
 
+  const labDisplay = useMemo(() => {
+    if (station !== "lab") return null;
+
+    const exclude = new Set<string>();
+    const nowServing = snapshot.counters.slice(0, 4).map((c, idx) => {
+      const value = c.ticket && !isDefaultLabTicket(c.ticket) ? c.ticket : (LAB_NOW_SERVING_MOCK[idx] ?? "");
+      if (value) exclude.add(value);
+      return value;
+    });
+
+    const realQueue = snapshot.next
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .filter((t) => !isDefaultLabTicket(t));
+    const queue = realQueue.length ? realQueue.slice(0, 2) : generateLabTickets(2, `${snapshot.resetDateKey}:lab:queue`, exclude);
+    queue.forEach((t) => exclude.add(t));
+
+    const realMissed = passedTickets
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .filter((t) => !isDefaultLabTicket(t));
+    const missed = realMissed.length ? realMissed.slice(-4) : generateLabTickets(4, `${snapshot.resetDateKey}:lab:missed`, exclude);
+    missed.forEach((t) => exclude.add(t));
+
+    return { nowServing, queue, missed };
+  }, [passedTickets, snapshot.counters, snapshot.next, snapshot.resetDateKey, station]);
+
+  const labNowServingTickets = Array.from({ length: 4 }).map((_, idx) => labDisplay?.nowServing[idx] ?? "");
+  const labQueueTickets = Array.from({ length: 2 }).map((_, idx) => labDisplay?.queue[idx] ?? "");
+  const labMissedTickets = Array.from({ length: 4 }).map((_, idx) => labDisplay?.missed[idx] ?? "");
+
+  const labNowServingContent = (
+    <>
+      <div className="mx-auto flex w-full max-w-[280px] items-center justify-between px-2 py-2 text-[13px] font-semibold tracking-wide text-black/55">
+        <div>房號 Room</div>
+        <div>票號 Ticket No.</div>
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col gap-y-3 px-5 py-2">
+        {labNowServingTickets.map((ticket, idx) => (
+          <div
+            key={`lab-now-${idx}`}
+            className="mx-auto flex min-h-[34px] w-full max-w-[280px] items-center justify-between gap-1 text-[20px] font-semibold"
+          >
+            <div className="-translate-y-0.5 text-[25px] font-bold leading-none tabular-nums text-[#18a37f]">{`Room ${idx + 1}`}</div>
+            <div
+              className={[
+                ticket.trim() ? "text-[#18a37f]" : "text-[#2f2b23]",
+                "text-[25px] font-bold leading-none tabular-nums",
+              ].join(" ")}
+            >
+              {ticket}
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+
+  const labQueueContent = (
+    <div className="flex min-h-0 flex-1 flex-col justify-center bg-[#f8fbf5] px-6 py-4">
+      <div className="space-y-5 text-center">
+        {labQueueTickets.map((ticket, idx) => (
+          <div key={`lab-queue-${idx}`} className="text-[34px] font-semibold leading-none tracking-[0.02em] text-black">
+            {ticket}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const labMissedContent = (
+    <div className="grid min-h-0 h-full grid-cols-2 content-start gap-x-10 gap-y-3 overflow-hidden bg-[#f8fbf5] px-5 py-4">
+      {labMissedTickets.map((ticket, idx) => (
+        <div key={`lab-missed-${idx}`} className="text-[30px] font-semibold leading-none tabular-nums text-black">
+          {ticket}
+        </div>
+      ))}
+    </div>
+  );
+
   const columnLabelZh = station === "dr" ? "醫生" : "櫃位";
   const columnLabelEn = station === "dr" ? "Doctor" : "Counter";
   const asset = (p: string) => `${import.meta.env.BASE_URL}${p}`;
@@ -329,6 +458,12 @@ export default function QueueDisplay() {
                   {station === "dr" ? (
                     <div className="ml-5 cursor-pointer text-2xl font-bold">
                       {displayStationZh} {displayStationEn}
+                    </div>
+                  ) : station === "lab" ? (
+                    <div className="ml-5 cursor-pointer text-[18px] font-bold leading-tight">
+                      {displayStationZh}
+                      <br />
+                      {displayStationEn}
                     </div>
                   ) : (
                     <div className="ml-5 cursor-pointer text-2xl font-bold">
@@ -449,6 +584,76 @@ export default function QueueDisplay() {
                   </tbody>
                 </table>
               </div>
+            ) : station === "lab" ? (
+              <div className="w-full px-8 pb-6 pt-5">
+                {isLabDraftV2 ? (
+                  <div className="flex w-full items-start gap-[2px]">
+                    <div className="flex h-[328px] min-w-0 flex-1 flex-col overflow-hidden rounded-l-[10px] rounded-r-none bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
+                      <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#2f2b23]">
+                        現在叫號 Now Serving
+                      </div>
+                      <div className="min-h-0 flex-1 bg-[#f8fbf5] py-2">{labNowServingContent}</div>
+                    </div>
+
+                    <div className="flex min-w-0 flex-[2] gap-[2px]">
+                      <div className="flex h-[328px] min-w-0 flex-1 flex-col overflow-hidden rounded-none bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
+                        <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#2f2b23]">
+                          等待中 Queuing
+                        </div>
+                        {labQueueContent}
+                      </div>
+
+                      <div className="flex h-[388px] min-w-0 flex-1 flex-col overflow-hidden rounded-l-none rounded-r-[10px] bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
+                        <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#3d2714]">
+                          已過號 Missed
+                        </div>
+                        {labMissedContent}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <div className="flex w-full items-start gap-2">
+                      <div className="flex h-[328px] w-[39%] min-w-0 flex-col overflow-hidden rounded-2xl bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
+                        <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#2f2b23]">
+                          現在叫號 Now Serving
+                        </div>
+                        <div className="min-h-0 flex-1 bg-[#f8fbf5] py-2">{labNowServingContent}</div>
+                      </div>
+
+                      <div className="flex h-[328px] min-w-0 flex-1 flex-col overflow-hidden rounded-2xl bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)]">
+                        <div className="flex min-h-[56px] items-center border-b border-[#d8d2c7] bg-white px-5 text-[20px] font-semibold text-[#2f2b23]">
+                          等待中 Queuing
+                        </div>
+                        {labQueueContent}
+                      </div>
+                    </div>
+
+                    <div className="mt-2 flex h-[150px] w-full min-w-0 flex-col overflow-hidden rounded-2xl bg-[#fcf8f4] text-black shadow-[0_16px_30px_rgba(134,101,63,0.05)] ring-1 ring-[#c8ac88]/10">
+                      <div className="flex min-h-[64px] items-center justify-start gap-3 border-b border-[#d8d2c7] bg-white px-5 py-2 text-[#3d2714]">
+                        <svg
+                          fill="#3d2714"
+                          version="1.1"
+                          xmlns="http://www.w3.org/2000/svg"
+                          xmlnsXlink="http://www.w3.org/1999/xlink"
+                          viewBox="0 0 437.699 437.699"
+                          xmlSpace="preserve"
+                          className="h-7 w-7 shrink-0"
+                        >
+                          <g>
+                            <path d="M372.578,63.101c-41.18-32.332-95.775-50.138-153.727-50.138c-57.952,0-112.547,17.806-153.728,50.138 C23.127,96.073,0,140.162,0,187.244c0,47.688,24.536,93.246,67.589,126.027l-20.81,97.656c-0.893,4.186,0.629,8.518,3.94,11.227 c2.079,1.701,4.645,2.582,7.237,2.582c1.538,0,3.087-0.311,4.548-0.943l144.063-62.539c4.104,0.18,8.223,0.271,12.282,0.271 c57.952,0,112.545-17.807,153.727-50.139c41.996-32.973,65.123-77.061,65.123-124.144 C437.701,140.162,414.574,96.073,372.578,63.101z M218.852,304.393c-15.709,0-28.49-12.78-28.49-28.489 c0-15.71,12.781-28.491,28.49-28.491c15.708,0,28.49,12.781,28.49,28.491C247.342,291.612,234.561,304.393,218.852,304.393z M240.721,215.57c-0.771,11.446-10.367,20.417-21.844,20.417c-0.499,0-1.002-0.016-1.505-0.051 c-10.867-0.737-19.624-9.498-20.355-20.376l-6.931-102.056c-0.522-7.686,1.98-15.118,7.049-20.926 c5.068-5.806,12.092-9.29,19.779-9.813c0.653-0.044,1.313-0.066,1.962-0.066c15.11,0,27.757,11.813,28.778,26.894 C248.202,116.2,240.721,215.57,240.721,215.57z" />
+                          </g>
+                        </svg>
+                        <div className="text-left leading-tight">
+                          <div className="text-[18px] font-semibold">以下號碼請聯絡病理部職員</div>
+                          <div className="text-[17px] font-semibold">For the following numbers, please approach our pathology staff</div>
+                        </div>
+                      </div>
+                      <div className="min-h-0 flex-1 overflow-hidden">{labMissedContent}</div>
+                    </div>
+                  </>
+                )}
+              </div>
             ) : (
               <div className="h-[380px] w-full">
                 <div className="box-border flex justify-between px-10 py-2 text-4xl">
@@ -492,7 +697,7 @@ export default function QueueDisplay() {
               </div>
             )}
 
-            {station !== "dr" && (
+            {station !== "dr" && station !== "lab" && (
             <div className="my-2 flex h-[100px] items-center justify-between bg-white font-sans">
               <div className="flex w-2/3 items-center justify-start">
                 <div>
@@ -556,7 +761,7 @@ export default function QueueDisplay() {
             </div>
             )}
 
-            {station !== "dr" && (
+            {station !== "dr" && station !== "lab" && (
               <>
                 <button
                   type="button"
